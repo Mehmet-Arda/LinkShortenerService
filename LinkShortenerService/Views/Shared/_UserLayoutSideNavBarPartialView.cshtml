@@ -1,0 +1,68 @@
+﻿<nav class="side-nav-bar">
+
+
+    <menu class="side-menu">
+
+
+        <a href=@Url.Action("Dashboard") class="logo-link">
+
+            <img src="~/Files/logo.png" alt="Logo" />
+            <div class="logo-text">Link Kısaltıcı</div>
+
+        </a>
+
+
+        <a href=@Url.Action("CreateShortUrl") class="shorten-url">
+            Yeni Oluştur
+        </a>
+
+        <hr style="width: 90%; background: #CBD5E1; margin:auto;" />
+
+
+        <a href=@Url.Action("Dashboard") class="side-nav-link">
+
+            <i class="fa-solid fa-chart-line"></i>
+            <div class="nav-link-text">
+                Dashboard
+            </div>
+
+        </a>
+
+
+        <a href=@Url.Action("Links") class="side-nav-link">
+
+            <i class="fa-solid fa-link"></i>
+            <div class="nav-link-text">
+                Linklerim
+            </div>
+
+        </a>
+
+
+
+        <a href=@Url.Action("UserProfile") class="side-nav-link mb-3">
+
+            <i class="fa-regular fa-user"></i>
+            <div class="nav-link-text">
+                Profilim
+            </div>
+
+        </a>
+
+        <hr style="width: 90%; background: #CBD5E1; margin:auto;" />
+
+
+        <a href=@Url.Action("Signout") class="side-nav-link mb-3">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <div class="nav-link-text">
+                Oturumu Kapat
+            </div>
+
+        </a>
+
+
+    </menu>
+
+
+</nav>

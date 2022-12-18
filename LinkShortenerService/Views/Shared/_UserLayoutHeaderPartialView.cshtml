@@ -1,0 +1,85 @@
+﻿@model LinkShortenerService.Models.Users
+
+<header>
+
+    <nav>
+
+    </nav>
+
+    <div class="profile-me-container">
+
+        <div class="profile-me">
+
+            <div class="img-container">
+
+                @if (Model.Photograph != null)
+                {
+                    <img src=@("/Uploads/Users/Images/"+Model.Photograph) alt="Profil Fotoğrafı" />
+                }
+                else
+                {
+                    <div class="img-letter">@(Model.Name.First())</div>
+                }
+
+
+            </div>
+
+            <div class="profile-me-text">
+                @(Model.Name+" "+Model.Surname)
+            </div>
+
+            <i class="fa-solid fa-caret-down"></i>
+
+        </div>
+
+
+
+        <div class="profile-me-dropdown">
+
+            <div class="img-text-container">
+
+                <div class="img-container">
+                    @if (Model.Photograph != null)
+                    {
+                        <img src=@("/Uploads/Users/Images/"+Model.Photograph) alt="Profil Fotoğrafı" />
+                    }
+                    else
+                    {
+                        <div class="img-letter">@(Model.Name.First()+""+Model.Surname.First())</div>
+                    }
+
+
+                </div>
+
+                <div class="name-surname-email-container">
+                    <div class="name-surname">
+                        @(Model.Name+" "+Model.Surname)
+                    </div>
+
+                    <div class="email">
+                        @(Model.Email)
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="dropdown-link-container">
+                <hr class="mb-3 mt-0" />
+
+                <a href=@Url.Action("UserProfile") class="dropdown-link"><i class="fa-solid fa-user"></i>Profil</a>
+                <a class="dropdown-link"><i class="fa-solid fa-gears"></i>Ayarlar</a>
+
+                <hr class="m-3" />
+                <a href=@Url.Action("Signout") class="dropdown-link"><i class="fa-solid fa-right-from-bracket"></i>Oturumu Kapat</a>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+</header>
+

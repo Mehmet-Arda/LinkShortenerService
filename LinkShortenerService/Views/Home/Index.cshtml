@@ -1,0 +1,490 @@
+﻿
+@model LinkShortenerService.Models.ViewModels.HomeIndexViewModel
+
+@{
+    ViewBag.Title = "Hoşgeldiniz | Link Kısaltma Servisi";
+
+}
+
+
+
+<div class="welcome-wrapper">
+
+    <header>
+        <a href="/Home/Index" class="logo"><img src="~/Files/logo.png" /> Shorten Url</a>
+
+        <nav class="header-nav">
+            <ul class="nav__links">
+                <li>
+                    <a href="#">Hakkımızda<div class="link-underline"></div></a>
+
+                </li>
+                <li>
+                    <a href="#">Hizmetler<div class="link-underline"></div></a>
+
+                    <div class="link-dropdown">
+                        <ul class="link-dropdown-list">
+
+                            <li>
+                                <i class="fa-solid fa-ruler-horizontal"></i>
+                                <div class="link-dropdown-list-content">
+                                    <div class="link-dropdown-list-title">Url kısaltılabilir</div>
+                                    <div class="link-dropdown-list-descrpt">
+                                        Kısaltılmış url, tag'lere göre gruplandırma...
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li>
+                                <i class="fa-solid fa-calendar"></i>
+                                <div class="link-dropdown-list-content">
+                                    <div class="link-dropdown-list-title">Link takibi yapılabilir</div>
+                                    <div class="link-dropdown-list-descrpt">
+                                        Link geçerlilik süresi, Özel takma isim...
+                                    </div>
+                                </div>
+                            </li>
+
+
+                            <li>
+                                <i class="fa-solid fa-chart-line"></i>
+                                <div class="link-dropdown-list-content">
+                                    <div class="link-dropdown-list-title">Çeşitli istatistikler görüntülenebilir</div>
+                                    <div class="link-dropdown-list-descrpt">
+                                        En fazla tıklanan link vs.
+                                    </div>
+                                </div>
+                            </li>
+
+
+
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="#">İletişim<div class="link-underline"></div></a></li>
+
+
+            </ul>
+        </nav>
+
+        <div class="header-buttons">
+            <a href=@Url.Action("Login") class="btn-common btn-login">Giriş Yap</a>
+            <a href=@Url.Action("Signin") class="btn-common btn-signin">Kaydol</a>
+        </div>
+
+
+    </header>
+
+    <div class="welcome-content">
+
+        <div class="row content-one d-flex justify-content-evenly align-items-center pt-5">
+            <div class="col-4 d-flex justify-content-center align-items-center">
+
+                <div class="row content-one-title text-wrap fw-bold fs-1">
+                    Link Kısaltma Servisi, Link Kısaltılır, Halı Kilim Paspas Kenarına overlock...
+                </div>
+
+            </div>
+
+            <div class="col-5">
+                <img src="~/Files/content0.jpg" class="img-fluid rounded" />
+            </div>
+        </div>
+
+        <div class="row mt-5 w-75 m-auto"><hr /></div>
+
+        <div class="row d-flex justify-content-center align-items-center flex-wrap my-5">
+
+            <div class="col-3 py-5 me-5">
+                <div class="statistics-container">
+
+                    <div class="statistic-card">
+
+                        <div class="card-icon-title-container">
+                            <div class="card-icon">
+                                <i class="fa-solid fa-link"></i>
+                            </div>
+
+                            <div class="card-statistic-title">
+                                En Çok Tıklanan Link
+                            </div>
+                        </div>
+
+
+                        <div class="card-statistic-value statistics-text">
+                            @(Model.MostVisitedLinks[0].OriginalUrl)
+                        </div>
+
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div class="col-3 py-5 ms-5">
+                <div class="statistics-container">
+
+                    <div class="statistic-card">
+
+                        <div class="card-icon-title-container">
+                            <div class="card-icon">
+                                <i class="fa-regular fa-hand-pointer"></i>
+                            </div>
+
+                            <div class="card-statistic-title">
+                                En Çok Tıklanan Link
+                                Tıklanma Sayısı
+                            </div>
+                        </div>
+
+
+                        <div class="card-statistic-value statistics-number">
+                            @(Model.MostVisitedLinks[0].ClickCount)
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+
+        <div class="row d-flex justify-content-center align-items-center flex-wrap my-5">
+
+            <div class="col-3 py-5">
+                <div class="statistics-container">
+
+                    <div class="statistic-card">
+
+                        <div class="card-icon-title-container">
+                            <div class="card-icon">
+                                <i class="fa-regular fa-user"></i>
+                            </div>
+
+                            <div class="card-statistic-title">
+                                En Çok Link Kısaltan Kullanıcı
+                            </div>
+                        </div>
+
+
+                        <div class="card-statistic-value statistics-text" style="top:0px;">
+                            @{
+                                string name = Model.MostLinkShortener.Name;
+                                string surnName = Model.MostLinkShortener.Surname;
+
+                                string text = "";
+
+                                text += name.Substring(0, 3);
+
+                                text += new string('*', (name.Length - 3));
+
+                                text += " ";
+
+                                text += surnName.Substring(0, 3);
+
+                                text += new string('*', (surnName.Length - 3));
+
+                                @(text)
+
+                            }
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div class="col-3 py-5">
+                <div class="statistics-container">
+
+                    <div class="statistic-card">
+
+                        <div class="card-icon-title-container">
+                            <div class="card-icon">
+                                <i class="fa-solid fa-ruler-horizontal"></i>
+                            </div>
+
+                            <div class="card-statistic-title">
+                                Kısalttığı Link Sayısı
+                            </div>
+                        </div>
+
+
+                        <div class="card-statistic-value statistics-number">
+                            @(Model.MostLinkShortenerLinkCount)
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+        <div class="row d-flex justify-content-center align-items-center flex-wrap my-5">
+
+            <div class="col-3 py-5">
+                <div class="statistics-container">
+
+                    <div class="statistic-card">
+
+                        <div class="card-icon-title-container">
+                            <div class="card-icon">
+                                <i class="fa-solid fa-link"></i>
+                            </div>
+
+                            <div class="card-statistic-title">
+                                Toplam Kısaltılmış Link
+                            </div>
+                        </div>
+
+
+                        <div class="card-statistic-value statistics-number">
+                            @(Model.TotalShortenedLinkCount)
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div class="col-3 py-5">
+                <div class="statistics-container">
+
+                    <div class="statistic-card">
+
+                        <div class="card-icon-title-container">
+                            <div class="card-icon">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+
+                            <div class="card-statistic-title" style="top:-18px;">
+                                Kullanıcıların Oluşturduğu Ortalama Link Sayısı
+                            </div>
+                        </div>
+
+
+                        <div class="card-statistic-value statistics-number" style="top:-8px;">
+                            @(Model.AverageLinkCountCreatedByUsers)
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+            <div class="col-3 py-5">
+                <div class="statistics-container">
+
+                    <div class="statistic-card">
+
+                        <div class="card-icon-title-container">
+                            <div class="card-icon">
+                                <i class="fa-solid fa-heart-pulse"></i>
+                            </div>
+
+                            <div class="card-statistic-title">
+                                Halihazırda Aktif Link Sayısı
+                            </div>
+                        </div>
+
+
+                        <div class="card-statistic-value statistics-number">
+                            @(Model.TotalActiveLinkCount)
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+
+
+        <div class="row d-flex justify-content-center align-items-center flex-wrap my-5">
+
+            <div class="col-3 py-5">
+                <div class="statistics-container">
+
+                    <div class="statistic-card">
+
+                        <div class="card-icon-title-container">
+                            <div class="card-icon">
+                                <i class="fa-solid fa-location-arrow"></i>
+                            </div>
+
+                            <div class="card-statistic-title">
+                                Toplam Yönlendirme
+                            </div>
+                        </div>
+
+
+                        <div class="card-statistic-value statistics-number">
+                            @(Model.TotalClicks)
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+
+
+        </div>
+
+
+
+
+
+        <div class="row mt-5 w-75 m-auto"><hr /></div>
+
+        <div class="row text-center mt-3">
+            <div class="col-12 fw-bold fs-2 mb-2">
+                Adipiscing elit fusce vel sapien elit.
+            </div>
+            <div class="col-12 text-secondary fs-5">Adipiscing elit fusce vel sapien elit.Adipiscing elit fusce vel sapien elit.</div>
+        </div>
+
+
+        <div class="row mt-5 cards-container pb-5">
+            <div class="row d-flex justify-content-around align-items-center">
+
+                <div class="col-3 card-container">
+
+                    <img src="~/Files/link-3.svg" class="me-3" alt="Alternate Text" />
+
+
+                    <div class="card-title">
+                        Sit amet, consectetur.
+                    </div>
+
+                    <div class="card-description">
+                        Urna fermentum ut fusce varius nisl ac ipsum gravida vel
+                        pretium tellus tincidunt integer eu augue augue nunc.
+                    </div>
+
+                    <hr class="card-line" />
+
+                    <div class="card-list-container">
+                        <div class="card-list-title">
+                            Adipiscing elit fusce vel sapien elit
+                        </div>
+
+                        <ul class="card-list">
+                            <li>
+                                <i class="fa-regular fa-circle-check"></i>
+
+                                <div class="card-list-text">
+                                    Amet, consectetur adipiscing elit
+                                </div>
+                            </li>
+
+                            <li>
+                                <i class="fa-regular fa-circle-check"></i>
+
+                                <div class="card-list-text">
+                                    Amet, consectetur adipiscing elit
+                                </div>
+                            </li>
+
+
+                            <li>
+                                <i class="fa-regular fa-circle-check"></i>
+
+                                <div class="card-list-text">
+                                    Amet, consectetur adipiscing elit
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+    <footer class="position-relative">
+        <div class="row p-0 g-0">
+            <div class="col-12 mt-5 fs-2 text-center">Link Kısaltıcı Servis</div>
+        </div>
+
+        <div class="row p-0 g-0 mt-3">
+            <div class="col-12 text-center">
+                Elit in malesuada semper mi, id sollicitudin urna fermentum ut fusce.
+            </div>
+        </div>
+
+        <div class="row p-0 g-0 mt-3">
+            <div class="col-12 text-center footer-links">
+                <a href="#">Hakkımızda</a>
+                <a href="#">Hizmetler</a>
+                <a href="#">İletişim</a>
+            </div>
+        </div>
+
+        <div class="row p-3 g-0 bottom-0 position-absolute w-100" style="background: #CBD5E1; color: #0F172A;">
+            <div class="col-12  text-center">
+                2022 Yılında &nbsp; <i class="fa-solid fa-heart"></i> &nbsp;Mehmet Arda Yüksel &nbsp;
+                <i class="fa-solid fa-heart"></i>&nbsp; Güven Kazıcı &nbsp;
+                <i class="fa-solid fa-heart"></i> &nbsp;Levent Kırımgeri &nbsp;
+                <i class="fa-solid fa-heart"></i> &nbsp;Muhammed Furkan Çelik &nbsp;
+                Tarafından Yapıldı
+            </div>
+        </div>
+    </footer>
+
+
+</div>
+
+<script src="~/Scripts/jquery-3.6.1.min.js"></script>
+<script src="~/Scripts/bootstrap.bundle.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+

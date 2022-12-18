@@ -1,0 +1,87 @@
+﻿
+
+@model LinkShortenerService.Models.ViewModels.UserLinksViewModel
+
+
+@{
+    ViewBag.Title = "Dashboard | Link Kısaltma Servisi";
+}
+
+
+<div class="user-index-wrapper">
+
+     @Html.Partial("_UserLayoutSideNavBarPartialView")
+
+    <div class="main-content">
+
+         @Html.Partial("_UserLayoutHeaderPartialView", Model.User)
+       
+
+        <section>
+
+
+
+
+        </section>
+    </div>
+
+
+
+</div>
+
+<script src="~/Scripts/jquery-3.6.1.min.js"></script>
+<script src="~/Scripts/bootstrap.bundle.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+
+
+
+    var sideNavBarLinks = document.querySelectorAll(".side-nav-bar .side-menu a");
+
+    var currentUrl = window.location.href;
+
+    if (currentUrl.includes("/kullanici/yeni-url-olustur")) {
+
+    }
+    else if (currentUrl.includes("/kullanici/dashboard")) {
+        sideNavBarLinks.item(2).classList.add("active");
+    }
+    else if (currentUrl.includes("/kullanici/profilim")) {
+        sideNavBarLinks.item(4).classList.add("active");
+    }
+    else if (currentUrl.includes("/kullanici/linklerim")) {
+        sideNavBarLinks.item(3).classList.add("active");
+    }
+
+    var profileMeBtn = document.querySelector(".profile-me");
+    var profileMeDropdown = document.querySelector(".profile-me-dropdown");
+
+
+    profileMeBtn.addEventListener("click", function () {
+
+
+
+        //if (profileMeBtn.classList.contains("active")) {
+        //    profileMeDropdown.style.height = "0px";
+        //} else {
+        //    profileMeDropdown.style.height = "500px";
+        //}
+
+        profileMeBtn.classList.toggle("active");
+        profileMeDropdown.classList.toggle("active");
+
+
+
+
+
+    });
+
+
+
+
+
+
+
+</script>
+

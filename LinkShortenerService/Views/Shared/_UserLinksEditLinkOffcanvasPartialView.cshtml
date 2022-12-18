@@ -1,0 +1,69 @@
+﻿@model LinkShortenerService.Models.ViewModels.LinkEditOffcanvasViewModel
+
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="LinkEditOffcanvas" aria-labelledby="offcanvasRightLabel" control=true>
+    <div class="offcanvas-header bg-dark text-white">
+        <h5 class="offcanvas-title" id="offcanvasRightLabel">Linki Düzenle</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Kapat"></button>
+    </div>
+    <div class="offcanvas-body">
+
+        @using (Html.BeginForm("EditLink", "User", FormMethod.Post, new { id = "EditLinkOffcanvasForm" }))
+        {
+
+            <input id="editUrlIDHiddenInput" type="hidden" name="editUrlID" value="@(Model.Url.ID)" />
+
+
+            <div class="validation-summary">
+
+            </div>
+
+
+            <div class="form-input-container">
+                @Html.LabelFor(x => x.Url.Title, new { @class = "form-label" })
+                @Html.TextBoxFor(x => x.Url.Title, new { @class = "form-input", autocomplete = "off" })
+
+                <div class="form-input-validation-message"></div>
+            </div>
+
+            <div class="form-input-container">
+                @Html.LabelFor(x => x.Url.TagName, new { @class = "form-label" })
+                @Html.TextBoxFor(x => x.Url.TagName, new { @class = "form-input" })
+                <div class="form-input-validation-message"></div>
+            </div>
+
+            <div class="form-input-container">
+                @Html.LabelFor(x => x.HalfUrlAlias, new { @class = "form-label" })
+
+                <div class="url-container">
+                    <div class="pre-url-container">
+                        @(HttpContext.Current.Request.Url.Authority)
+                    </div>
+                    @("/")
+                    @Html.TextBoxFor(x => x.HalfUrlAlias, new { @class = "form-input", autocomplete = "off" })
+                </div>
+
+                <div class="form-input-validation-message"></div>
+
+            </div>
+
+
+            <div class="form-input-container">
+                @Html.LabelFor(x => x.Url.ValidityDate, new { @class = "form-label" })
+                @Html.TextBoxFor(x => x.Url.ValidityDate, new { @class = "form-input",type="datetime-local" })
+                <div class="form-input-validation-message"></div>
+            </div>
+
+
+            <div class="button-container">
+                <button id="EditLinkSubmitBtn" class="btn-disabled" disabled type="submit">Güncelle</button>
+            </div>
+
+
+
+        }
+
+
+
+    </div>
+</div>

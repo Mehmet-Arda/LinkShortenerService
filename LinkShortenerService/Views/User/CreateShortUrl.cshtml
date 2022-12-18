@@ -1,0 +1,254 @@
+﻿
+
+@model LinkShortenerService.Models.ViewModels.UserCreateShortUrlViewModel
+
+@{
+    ViewBag.Title = "Link Oluştur | Link Oluşturma Servisi";
+}
+
+
+
+<div class="user-index-wrapper">
+
+    @Html.Partial("_UserLayoutSideNavBarPartialView")
+
+
+    <div class="main-content">
+
+        @Html.Partial("_UserLayoutHeaderPartialView", Model.User)
+
+
+        <section>
+
+            <div class="create-shorturl-form-container">
+
+                <div class="title">Yeni Oluştur</div>
+
+                @using (Html.BeginForm("CreateShortUrl", "User", FormMethod.Post, new { id = "CreateShortUrl", @class = "create-shorturl-form" }))
+                {
+
+                    @Html.ValidationSummary(false, "", new { @class = "" })
+
+                    <div class="form-input-container">
+                        <div class="form-label">Adres (zorunlu alan*)</div>
+
+                        @Html.TextBoxFor(x => x.NewUrl.OriginalUrl, new { @class = "form-input", autofocus = true, placeholder = "https://kocaeli.edu.tr", autocomplete = "off" })
+
+                        @Html.ValidationMessageFor(x => x.NewUrl.OriginalUrl, "", new { @class = "input-validation-message" })
+
+                    </div>
+
+
+                    <div class="form-input-container">
+                        <div class="form-label">Başlık (isteğe bağlı)</div>
+
+                        @Html.TextBoxFor(x => x.NewUrl.Title, new { @class = "form-input", autocomplete = "off" })
+
+                        @Html.ValidationMessageFor(x => x.NewUrl.Title, "", new { @class = "input-validation-message" })
+
+                    </div>
+
+
+                    <div class="form-input-container">
+                        <div class="form-label">Özel Yarı Url (isteğe bağlı)</div>
+
+                        <div class="url-alias-container">
+                            <div class="domain">
+                                @(HttpContext.Current.Request.Url.Host)
+                            </div>
+
+                            <i class="fa-solid fa-slash"></i>
+
+                            @Html.TextBoxFor(x => x.HalfUrlAlias, new { @class = "form-input alias-input", autocomplete = "off" })
+                        </div>
+
+
+                        @Html.ValidationMessageFor(x => x.HalfUrlAlias, "", new { @class = "input-validation-message" })
+
+                    </div>
+
+
+
+
+                    <div class="form-input-container">
+
+                        <div class="form-label">Geçerlilik Bitiş Tarihi (isteğe bağlı)</div>
+
+
+                        @Html.TextBoxFor(x => x.ValidityTime, new { type = "datetime-local", @class = "date-time-input", autocomplete = "off" })
+
+                        @Html.ValidationMessageFor(x => x.ValidityTime, "", new { @class = "input-validation-message" })
+
+
+                    </div>
+
+
+
+
+                }
+
+
+
+                <div class="form-send-btn-container">
+                    <button class="form-send-btn" type="submit" form="CreateShortUrl"><i class="fa-regular fa-square-plus fs-3 me-2"></i>Oluştur</button>
+
+                </div>
+
+            </div>
+
+
+
+
+        </section>
+    </div>
+
+
+
+</div>
+
+<script src="~/Scripts/jquery-3.6.1.min.js"></script>
+<script src="~/Scripts/bootstrap.bundle.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+
+
+    var sideNavBarLinks = document.querySelectorAll(".side-nav-bar .side-menu a");
+
+    var currentUrl = window.location.href;
+
+    if (currentUrl.includes("/kullanici/yeni-url-olustur")) {
+
+    }
+    else if (currentUrl.includes("/kullanici/dashboard")) {
+        sideNavBarLinks.item(2).classList.add("active");
+    }
+    else if (currentUrl.includes("/kullanici/profilim")) {
+        sideNavBarLinks.item(4).classList.add("active");
+    }
+    else if (currentUrl.includes("/kullanici/linklerim")) {
+        sideNavBarLinks.item(3).classList.add("active");
+    }
+
+    var profileMeBtn = document.querySelector(".profile-me");
+    var profileMeDropdown = document.querySelector(".profile-me-dropdown");
+
+    var profileMeBtn = document.querySelector(".profile-me");
+    var profileMeDropdown = document.querySelector(".profile-me-dropdown");
+
+
+    profileMeBtn.addEventListener("click", function () {
+
+
+
+        //if (profileMeBtn.classList.contains("active")) {
+        //    profileMeDropdown.style.height = "0px";
+        //} else {
+        //    profileMeDropdown.style.height = "500px";
+        //}
+
+        profileMeBtn.classList.toggle("active");
+        profileMeDropdown.classList.toggle("active");
+
+
+
+
+
+    });
+
+    //YYYY-MM-DDThh:mm:ss.ms
+
+    //var now = new Date();
+
+
+    //var dateTimeNow = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate() + "T" + now.getHours() + ":" + now.getMinutes();
+
+    //document.querySelector("#ValidityTime").min = dateTimeNow;
+
+
+
+
+
+
+    UnderlineLabelErrorCheck();
+
+    /*Hata olduğunda label ve underline renginin değiştirilmesi*/
+
+    function UnderlineLabelErrorCheck() {
+
+        var textInputs = document.querySelectorAll(".create-shorturl-form-container input[type='text']");
+
+        for (var i = 0; i < textInputs.length; i++) {
+
+            if (textInputs.item(i).classList.contains("alias-input")) {
+
+                if (textInputs.item(i).parentElement.nextElementSibling.classList.contains("field-validation-error")) {
+
+                    textInputs.item(i).parentElement.previousElementSibling.classList.add("error");
+                    textInputs.item(i).classList.add("error");
+                    textInputs.item(i).parentElement.nextElementSibling.classList.add("error");
+
+                } else if (textInputs.item(i).parentElement.nextElementSibling.classList.contains("field-validation-valid")) {
+
+                    textInputs.item(i).parentElement.previousElementSibling.classList.remove("error");
+                    textInputs.item(i).classList.remove("error");
+                    textInputs.item(i).parentElement.nextElementSibling.classList.remove("error");
+
+                }
+
+
+            } else if (textInputs.item(i).nextElementSibling.classList.contains("field-validation-error")) {
+
+                textInputs.item(i).previousElementSibling.classList.add("error");
+                textInputs.item(i).classList.add("error");
+                textInputs.item(i).nextElementSibling.classList.add("error");
+
+            }
+            else if (textInputs.item(i).nextElementSibling.classList.contains("field-validation-valid")) {
+
+                textInputs.item(i).previousElementSibling.classList.remove("error");
+                textInputs.item(i).classList.remove("error");
+                textInputs.item(i).nextElementSibling.classList.remove("error");
+
+
+            }
+
+
+        }
+    }
+
+
+
+    var textInputs = document.querySelectorAll(".create-shorturl-form-container input[type='text']");
+
+    for (var i = 0; i < textInputs.length; i++) {
+
+        textInputs.item(i).addEventListener("keyup", function (e) {
+
+            setTimeout(UnderlineLabelErrorCheck, 150);
+
+        });
+    }
+
+
+
+
+    var sendBtn = document.querySelector(".create-shorturl-form-container .form-send-btn");
+
+    sendBtn.addEventListener("click", function (e) {
+
+        setTimeout(UnderlineLabelErrorCheck, 150);
+
+
+    });
+
+
+
+
+
+
+</script>
+
+
+
+

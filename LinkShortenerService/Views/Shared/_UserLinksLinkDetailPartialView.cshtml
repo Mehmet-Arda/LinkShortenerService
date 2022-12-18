@@ -1,0 +1,131 @@
+﻿@model LinkShortenerService.Models.ViewModels.LinkDetailPartialViewModel
+
+
+
+<div class="link-detail">
+
+    <div class="link-detail-header">
+
+        <div class="link-title-buttons-container">
+
+            <div class="link-title-or-shortened-url">
+
+                @if (Model.Url.Title != null)
+                {
+                    @(Model.Url.Title)
+                }
+                else
+                {
+                    @(HttpContext.Current.Request.Url.Authority+"/"+Model.Url.ShortenedUrl)
+
+                }
+
+
+            </div>
+
+            <div class="buttons-container">
+                <button class="edit" url-id=@(Model.Url.ID)><i class="fa-solid fa-pen"></i> Düzenle</button>
+                <button class="delete" url-id=@(Model.Url.ID)><i class="fa-solid fa-trash"></i> Sil</button>
+            </div>
+
+
+        </div>
+
+
+
+        <div class="link-created-at-by">
+            <i class="fa-regular fa-calendar"></i>
+            @(Model.User.Name+" "+Model.User.Surname) tarafından <span style="font-weight:700;">@(Model.Url.CreatedAt)</span> tarihinde oluşturulmuştur.
+        </div>
+
+        <div class="total-engagements">
+
+            <i class="fa-solid fa-chart-simple"></i> <span class="number">@(Model.Url.ClickCount)</span> Toplam Tıklanma
+        </div>
+
+    </div>
+
+
+    <div class="link-detail-content">
+
+
+        <div class="shortened-url-buttons-container">
+
+            <div class="shortened-url-container">
+                <a class="shortened-url">
+                    @(HttpContext.Current.Request.Url.Authority+"/"+Model.Url.ShortenedUrl)
+                </a>
+            </div>
+
+
+            <div class="buttons-container">
+                <button class="copy">
+                    <i class="fa-solid fa-copy"></i> <span class="copy-text">Kopyala</span>
+                </button>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="original-url">
+            <i class="fa-solid fa-arrow-turn-down"></i> @(Model.Url.OriginalUrl)
+        </div>
+
+
+
+        <div class="validity-date">
+            Son Geçerlilik Süresi:
+            @{
+
+                var urlValidityDate = Model.Url.ValidityDate;
+
+                var yearMonthDay = urlValidityDate.Substring(0, urlValidityDate.IndexOf("T"));
+                var hourMinute = urlValidityDate.Substring((urlValidityDate.IndexOf("T") + 1));
+
+                var splitYMD = yearMonthDay.Split('-');
+                var splitHm = hourMinute.Split(':');
+
+                int year = Convert.ToInt32(splitYMD[0]);
+                int month = Convert.ToInt32(splitYMD[1]);
+                int day = Convert.ToInt32(splitYMD[2]);
+                int hour = Convert.ToInt32(splitHm[0]);
+                int minute = Convert.ToInt32(splitHm[1]);
+
+
+                DateTime validityDate = new DateTime(year, month, day, hour, minute, 0);
+
+                if (validityDate < DateTime.Now)
+                {
+                    <span style="font-weight: 700; color: #B91C1C; background: #FECACA; padding: 5px; border-radius: 3px; ">@(splitYMD[0]+"-"+ splitYMD[1]+"-"+ splitYMD[2]+" "+ splitHm[0] + ":"+ splitHm[1])</span>
+                    <span style="color: white; background: #EF4444; padding: 5px; border-radius: 3px; ">Link Durumu: <i class="fa-regular fa-rectangle-xmark"></i></span>
+
+                }
+                else
+                {
+                    <span style="font-weight: 700; color: #A16207; background: #FEF08A;padding:5px; border-radius:3px;">@(splitYMD[2]+"-"+ splitYMD[1]+"-"+ splitYMD[0]+" "+ splitHm[0] + ":"+ splitHm[1])</span>
+                    <span style="color: #166534; background: #22C55E; padding: 5px; border-radius: 3px; ">Link Durumu: <i class="fa-regular fa-square-check"></i></span>
+
+                }
+
+
+            }
+        </div>
+
+    </div>
+
+
+
+    <div class="link-total-engagements-container">
+
+        <span class="number">@(Model.Url.ClickCount)</span>
+        <i class="fa-solid fa-chart-simple"></i>
+        <i class="fa-solid fa-chart-simple"></i>
+        <div class="text">Toplam Tıklanma</div>
+
+    </div>
+
+
+
+</div>

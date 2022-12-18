@@ -1,0 +1,65 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/style.css" rel="stylesheet" />
+
+
+   
+
+</head>
+<body>
+
+    <div class="loader-wrapper">
+        <span class="loader"><span class="loader-inner"></span></span>
+    </div>
+
+
+
+
+    <div id="toast-result" class="toast position-fixed top-0 start-50 translate-middle fs-5 @ViewBag.resultbg text-white border-0 p-2" style="width: 600px; margin-top: 60px; z-index:1111; font-family:'Quicksand',sans-serif;">
+        <div class="d-flex align-items-center">
+            <div class="toast-body d-flex align-items-center">
+                @if (ViewBag.result != null)
+                {
+                    <span> @ViewBag.result</span>
+
+                }
+            </div>
+            <button class="btn btn-close btn-close-white m-auto me-2" type="button" data-bs-dismiss="toast"></button>
+        </div>
+
+    </div>
+
+    @RenderBody()
+
+
+
+    <script>
+
+        $(window).on("load", function () {
+            $(".loader-wrapper").fadeOut("slow");
+        });
+
+
+        var toastResult = document.querySelector("#toast-result");
+        var toastResultBody = document.querySelector("#toast-result .toast-body");
+
+
+        if (toastResultBody.children.length == 1) {
+
+            var toast = new bootstrap.Toast(toastResult, {
+                animation: true,
+                autohide: true,
+                delay: 6000
+            });
+            toast.show();
+        }
+
+
+    </script>
+</body>
+</html>

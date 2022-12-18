@@ -1,0 +1,83 @@
+﻿@using LinkShortenerService.Models
+
+@model List<Urls>
+
+
+<div class="link-list-header">@(Model.Count+" Sonuç")</div>
+
+
+@{
+    int i = -1;
+}
+
+<div class="links-btn-container">
+    @foreach (var url in Model)
+    {
+        i++;
+        <button class="link-btn @(ViewBag.editedStartUrlIndex==i?"active":"")" url-id=@(url.ID)>
+
+            <div class="checkbox-container">
+                <div class="checkbox" url-id=@(url.ID)>
+                    <i class="fa-solid fa-check"></i>
+                </div>
+            </div>
+
+            <div class="link-btn-content-container">
+
+                <div class="link-created-date">@(url.CreatedAt)</div>
+
+                @if (url.Title == null)
+                {
+                    if (url.OriginalUrl.Length > 30)
+                    {
+                        <div class="link-title-or-original-url">@(url.OriginalUrl.Substring(0, 30) + "...")</div>
+                    }
+                    else
+                    {
+                        <div class="link-title-or-original-url">@(url.OriginalUrl)</div>
+                    }
+
+
+                }
+                else
+                {
+                    if (url.Title.Length > 30)
+                    {
+                        <div class="link-title-or-original-url">@(url.Title.Substring(0, 30) + "...")</div>
+                    }
+                    else
+                    {
+                        <div class="link-title-or-original-url">@(url.Title)</div>
+                    }
+
+                }
+
+
+                <div class="shortened-url-total-engagements-container">
+
+                    @{
+                        string shortenedUrl = HttpContext.Current.Request.Url.Authority + "/" + url.ShortenedUrl;
+                        if (shortenedUrl.Length > 30)
+                        {
+                            <div class="shortened-url">
+
+                                @(shortenedUrl.Substring(0,30)+"...")
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="shortened-url">@(shortenedUrl)</div>
+                        }
+                    }
+
+                    <div class="total-engagements">@(url.ClickCount) <i class="fa-solid fa-chart-simple ms-1"></i> <i class="fa-solid fa-chart-simple"></i></div>
+                </div>
+            </div>
+
+
+
+        </button>
+
+    }
+</div>
+

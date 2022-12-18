@@ -1,0 +1,438 @@
+﻿
+
+@model LinkShortenerService.Models.ViewModels.UserProfileViewModel
+
+
+@{
+    ViewBag.Title = "Profilim | Link Kısaltma Servisi";
+}
+
+
+<div class="user-profile-wrapper">
+
+    @Html.Partial("_UserLayoutSideNavBarPartialView")
+
+
+    <div class="main-content">
+
+
+        @Html.Partial("_UserLayoutHeaderPartialView", Model.User)
+
+       
+       
+        <section class="overflow-scroll">
+
+
+            <div class="container" style="padding-top:40px;">
+
+                <section class="row d-flex justify-content-center ">
+
+                    <article class="col-7 pb-5 ">
+
+                        <div class="row">
+                            <div class="col-10 bg-white shadow mx-auto p-0 position-relative" style="border-radius: 13px;">
+                                <div class="w-100 position-absolute " style="height: 111px; border-radius: 13px 13px 0 0; z-index: 0; background: url(/Files/bg1.jpg); background-size: cover; "></div>
+
+                                <div class="user-profile-avatar-container pt-4">
+
+                                    <div class="row d-flex justify-content-center mb-4">
+
+                                        <div class="col-4 d-flex justify-content-center">
+                                            <div class="image-input-container">
+                                                <img src=@(Model.User.Photograph == null ? "/Files/person.png" : "/Uploads/Users/Images/" + Model.User.Photograph) title="Profil Resmi Önizlemesi" id="profilResmiImage" />
+
+                                                @Html.TextBoxFor(x => x.Photograph, new { @class = "", id = "profilResmiInput", name = "profilResmi", type = "file", form = "userProfileForm", accept = "image/png,image/jpeg" })
+
+                                                <label for="profilResmiInput">
+                                                    <i class="fa-solid fa-camera"></i>
+                                                </label>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="user-profile-avatar-text text-center fs-5 mt-1"><b>@(Model.User.Name+" "+Model.User.Surname)</b></div>
+                                    <div class="user-profile-avatar-text text-center mb-4">Kayıt Tarihi: @(Model.User.DateOfRegistration)</div>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                        @using (Html.BeginForm("UserProfile", "User", FormMethod.Post, new { @class = "user-profile-form", id = "userProfileForm", enctype = "multipart/form-data" }))
+                        {
+                            <div class="row mt-3">
+                                <div class="col-11 bg-white mx-auto shadow px-5" style="border-radius:13px; ">
+
+                                    <div class="user-profile-form-container">
+
+
+                                        <div class="user-profile-form-title text-center position-relative mt-3">
+                                            Profili Güncelle
+                                        </div>
+
+
+
+                                        <div class="row mt-4 g-0">
+                                            <div class="col-6">
+
+                                                <div class="user-profile-form-input-container">
+                                                    @Html.LabelFor(x => x.User.TCNo, new { @class = "user-profile-form-input-label" })
+
+                                                    @Html.TextBoxFor(x => x.User.TCNo, new { @class = "user-profile-form-input", autocomplete = "off" })
+
+                                                    <div class="input-underline"></div>
+
+                                                    @Html.ValidationMessageFor(x => x.User.TCNo, "", new { @class = "user-profile-form-input-validation-message" })
+
+                                                </div>
+
+
+                                            </div>
+                                            <div class="col-6">
+
+                                                <div class="user-profile-form-input-container">
+                                                    @Html.LabelFor(x => x.User.Tel, new { @class = "user-profile-form-input-label" })
+
+                                                    @Html.TextBoxFor(x => x.User.Tel, new { @class = "user-profile-form-input", autocomplete = "off" })
+
+                                                    <div class="input-underline"></div>
+
+                                                    @Html.ValidationMessageFor(x => x.User.Tel, "", new { @class = "user-profile-form-input-validation-message" })
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row mt-4 g-0">
+                                            <div class="col-6">
+                                                <div class="user-profile-form-input-container ">
+                                                    @Html.LabelFor(x => x.User.Name, new { @class = "user-profile-form-input-label" })
+
+                                                    @Html.TextBoxFor(x => x.User.Name, new { @class = "user-profile-form-input", autocomplete = "off" })
+
+                                                    <div class="input-underline"></div>
+
+                                                    @Html.ValidationMessageFor(x => x.User.Name, "", new { @class = "user-profile-form-input-validation-message" })
+
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="user-profile-form-input-container">
+                                                    @Html.LabelFor(x => x.User.Surname, new { @class = "user-profile-form-input-label" })
+
+                                                    @Html.TextBoxFor(x => x.User.Surname, new { @class = "user-profile-form-input", autocomplete = "off" })
+
+                                                    <div class="input-underline"></div>
+
+                                                    @Html.ValidationMessageFor(x => x.User.Surname, "", new { @class = "user-profile-form-input-validation-message" })
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row mt-4 mb-4 g-0">
+                                            <div class="col-6">
+
+                                                <div class="user-profile-form-input-container">
+                                                    @Html.LabelFor(x => x.User.Email, new { @class = "user-profile-form-input-label" })
+
+                                                    @Html.TextBoxFor(x => x.User.Email, new { @class = "user-profile-form-input", autocomplete = "off" })
+
+                                                    <div class="input-underline"></div>
+
+                                                    @Html.ValidationMessageFor(x => x.User.Email, "", new { @class = "user-profile-form-input-validation-message" })
+
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+
+
+
+                                                <div class="user-profile-form-input-container">
+                                                    @Html.LabelFor(x => x.Password, new { @class = "user-profile-form-input-label" })
+
+                                                    @Html.TextBoxFor(x => x.Password, new { @class = "user-profile-form-input", autocomplete = "off", type = "password" })
+
+                                                    <div class="input-underline"></div>
+
+                                                    @Html.ValidationMessageFor(x => x.Password, "", new { @class = "user-profile-form-input-validation-message" })
+                                                    <div class="show-password">
+                                                        <i class="show fa-solid fa-eye"></i>
+                                                        <i class="hide fa-solid fa-eye-slash d-none"></i>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+
+                                <div class="col-12 bg-white mx-auto shadow px-5" style="border-radius: 13px; ">
+
+                                    <div class="user-profile-form-send-container">
+
+                                        <button type="submit" class="user-profile-form-send-btn">Güncelle</button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        }
+
+                    </article>
+
+
+
+
+
+                </section>
+
+
+            </div>
+
+
+
+
+
+        </section>
+
+
+
+
+    </div>
+
+
+
+
+</div>
+
+
+<script src="~/Scripts/jquery-3.6.1.min.js"></script>
+<script src="~/Scripts/bootstrap.bundle.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script>
+    /*const { Modal } = require("../../Scripts/bootstrap.bundle");*/
+
+
+    var profileMeBtn = document.querySelector(".profile-me");
+    var profileMeDropdown = document.querySelector(".profile-me-dropdown");
+
+
+    profileMeBtn.addEventListener("click", function () {
+
+
+        profileMeBtn.classList.toggle("active");
+        profileMeDropdown.classList.toggle("active");
+
+
+    });
+
+
+
+    var sideNavBarLinks = document.querySelectorAll(".side-nav-bar .side-menu a");
+
+    var currentUrl = window.location.href;
+
+    if (currentUrl.includes("/kullanici/yeni-url-olustur")) {
+       
+    }
+    else if (currentUrl.includes("/kullanici/dashboard")) {
+        sideNavBarLinks.item(2).classList.add("active");
+    }
+    else if (currentUrl.includes("/kullanici/profilim")) {
+        sideNavBarLinks.item(4).classList.add("active");
+    }
+    else if (currentUrl.includes("/kullanici/linklerim")) {
+        sideNavBarLinks.item(3).classList.add("active");
+    }
+   
+
+
+
+
+    /*Profil resmi önizleme*/
+
+    var profilResmiInput = document.querySelector("#profilResmiInput");
+
+    var profilResmiImage = document.querySelector("#profilResmiImage");
+
+    profilResmiInput.addEventListener("change", function () {
+        var reader = new FileReader();
+        reader.readAsDataURL(profilResmiInput.files[0]);
+        reader.addEventListener("load", function () {
+            profilResmiImage.setAttribute("src", reader.result);
+        })
+    })
+
+
+
+
+
+
+
+
+    var signinInputs = document.querySelectorAll(".user-profile-form-input-container .user-profile-form-input");
+    var signinInputLabels = document.querySelectorAll(".user-profile-form-input-container .user-profile-form-input-label");
+    var signinInputUnderlines = document.querySelectorAll(".user-profile-form-input-container .input-underline");
+
+
+
+
+    for (var i = 0; i < signinInputs.length; i++) {
+
+        if (signinInputs.item(i).value != "") {
+            signinInputs.item(i).previousElementSibling.classList.add("active");
+
+        }
+
+        signinInputs.item(i).addEventListener("focus", function (e) {
+
+            e.stopPropagation();
+
+            for (var i = 0; i < signinInputLabels.length; i++) {
+
+                if (signinInputLabels.item(i).nextElementSibling.value == "") {
+                    signinInputLabels.item(i).classList.remove("active");
+                }
+
+            }
+
+            for (var i = 0; i < signinInputUnderlines.length; i++) {
+                signinInputUnderlines.item(i).classList.remove("active");
+            }
+
+
+            this.previousElementSibling.classList.add("active");
+            this.nextElementSibling.classList.add("active");
+
+
+        })
+    }
+
+
+
+
+
+
+
+
+
+
+
+    /*Şifre aç kapa işlemi*/
+
+
+    var inputPassword = document.querySelector("#Password");
+
+    var showPassword = document.querySelector(".show-password .show");
+    var hidePassword = document.querySelector(".show-password .hide");
+
+
+    showPassword.addEventListener("click", function (e) {
+        inputPassword.setAttribute("type", "text");
+        showPassword.classList.add("d-none");
+        hidePassword.classList.remove("d-none");
+    });
+
+
+    hidePassword.addEventListener("click", function (e) {
+        inputPassword.setAttribute("type", "password");
+        hidePassword.classList.add("d-none");
+        showPassword.classList.remove("d-none");
+    });
+
+
+
+    UnderlineLabelErrorCheck();
+
+    /*Hata olduğunda label ve underline renginin değiştirilmesi*/
+
+    function UnderlineLabelErrorCheck() {
+
+        var textInputs = document.querySelectorAll(".user-profile-form-container input[type='text'],.user-profile-form-container input[type='password']");
+
+        for (var i = 0; i < textInputs.length; i++) {
+
+
+            if (textInputs.item(i).nextElementSibling.nextElementSibling.classList.contains("field-validation-error")) {
+
+                textInputs.item(i).previousElementSibling.classList.add("error");
+
+                textInputs.item(i).nextElementSibling.classList.add("error");
+
+            }
+            else if (textInputs.item(i).nextElementSibling.nextElementSibling.classList.contains("field-validation-valid")) {
+
+                textInputs.item(i).previousElementSibling.classList.remove("error");
+
+                textInputs.item(i).nextElementSibling.classList.remove("error");
+
+
+            }
+
+
+        }
+    }
+
+
+
+    var textInputs = document.querySelectorAll(".user-profile-form-container input[type='text'],.user-profile-form-container input[type='password']");
+
+    for (var i = 0; i < textInputs.length; i++) {
+
+        textInputs.item(i).addEventListener("keyup", function (e) {
+
+            setTimeout(UnderlineLabelErrorCheck, 150);
+
+        });
+    }
+
+    var ddlInputs = document.querySelectorAll(".user-profile-form-container .ddl");
+
+    for (var i = 0; i < ddlInputs.length; i++) {
+
+        ddlInputs.item(i).addEventListener("change", function (e) {
+
+            setTimeout(UnderlineLabelErrorCheck, 150);
+
+        });
+    }
+
+
+
+    var sendBtn = document.querySelector(".user-profile-form-send-btn");
+
+    sendBtn.addEventListener("click", function (e) {
+
+        setTimeout(UnderlineLabelErrorCheck, 150);
+
+
+    });
+
+
+
+
+
+
+
+</script>
+

@@ -1,0 +1,232 @@
+﻿@model LinkShortenerService.Models.ViewModels.UserLoginViewModel
+
+
+@{
+    ViewBag.Title = "Giriş Yap | Link Kısaltma Servisi";
+}
+
+
+
+<div class="login-wrapper">
+
+    <div class="login-banner">
+
+    </div>
+
+    <div id="toast-result" class="toast position-fixed top-0 start-50 translate-middle fs-5 @ViewBag.resultbg text-white border-0 p-2" style="width: 800px; margin-top: 63px; z-index:1111;">
+        <div class="d-flex align-items-center">
+            <div class="toast-body d-flex align-items-center">
+                @if (ViewBag.result != null)
+                {
+                    <span> @ViewBag.result</span>
+
+                }
+            </div>
+            <button class="btn btn-close btn-close-white m-auto me-2" type="button" data-bs-dismiss="toast"></button>
+        </div>
+
+    </div>
+
+    <div class="login-form-container position-absolute">
+
+        <a href=@Url.Action("Index","Home") class="go-welcome-btn"><i class="fa-solid fa-caret-left"></i>Geri</a>
+
+
+        @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "login-form pt-5" }))
+        {
+
+            <div class="login-form-title text-center position-relative">
+                Giriş Yap
+            </div>
+
+
+            <div class="login-form-input-container">
+                @Html.LabelFor(x => x.Email, new { @class = "login-form-input-label" })
+
+                @Html.TextBoxFor(x => x.Email, new { @class = "login-form-input", autocomplete = "off" })
+
+                <div class="input-underline"></div>
+
+                @Html.ValidationMessageFor(x => x.Email, "", new { @class = "login-form-input-validation-message" })
+
+            </div>
+
+
+
+            <div class="login-form-input-container">
+                @Html.LabelFor(x => x.Password, new { @class = "login-form-input-label" })
+
+                @Html.TextBoxFor(x => x.Password, new { @class = "login-form-input", autocomplete = "off", type = "password" })
+
+                <div class="input-underline"></div>
+
+
+                @Html.ValidationMessageFor(x => x.Password, "", new { @class = "login-form-input-validation-message" })
+
+                <div class="show-password">
+                    <i class="show fa-solid fa-eye"></i>
+                    <i class="hide fa-solid fa-eye-slash d-none"></i>
+                </div>
+
+
+
+            </div>
+
+
+            <div class="forgot-password-container text-end pe-5">
+                <a href=@Url.Action("ForgotPassword")>Şifremi Unuttum</a>
+            </div>
+
+            <div class="login-form-send-container">
+
+                <button type="submit" class="login-form-send-btn">Gönder</button>
+
+            </div>
+
+
+
+        }
+
+    </div>
+
+</div>
+<script src="~/Scripts/jquery-3.6.1.min.js"></script>
+<script src="~/Scripts/bootstrap.bundle.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script>
+
+
+
+
+
+
+    var signinInputs = document.querySelectorAll(".login-form-input-container .login-form-input");
+    var signinInputLabels = document.querySelectorAll(".login-form-input-container .login-form-input-label");
+    var signinInputUnderlines = document.querySelectorAll(".login-form-input-container .input-underline");
+
+
+
+
+    for (var i = 0; i < signinInputs.length; i++) {
+
+        if (signinInputs.item(i).value != "") {
+            signinInputs.item(i).previousElementSibling.classList.add("active");
+
+        }
+
+        signinInputs.item(i).addEventListener("focus", function (e) {
+
+            e.stopPropagation();
+
+            for (var i = 0; i < signinInputLabels.length; i++) {
+
+                if (signinInputLabels.item(i).nextElementSibling.value == "" && !signinInputLabels.item(i).classList.contains("except")) {
+                    signinInputLabels.item(i).classList.remove("active");
+                }
+
+            }
+
+            for (var i = 0; i < signinInputUnderlines.length; i++) {
+                signinInputUnderlines.item(i).classList.remove("active");
+            }
+
+
+            this.previousElementSibling.classList.add("active");
+            this.nextElementSibling.classList.add("active");
+
+
+        })
+    }
+
+
+
+
+
+
+    /*Şifre aç kapa işlemi*/
+
+
+    var inputPassword = document.querySelector("#Password");
+
+    var showPassword = document.querySelector(".show-password .show");
+    var hidePassword = document.querySelector(".show-password .hide");
+
+
+    showPassword.addEventListener("click", function (e) {
+        inputPassword.setAttribute("type", "text");
+        showPassword.classList.add("d-none");
+        hidePassword.classList.remove("d-none");
+    });
+
+
+    hidePassword.addEventListener("click", function (e) {
+        inputPassword.setAttribute("type", "password");
+        hidePassword.classList.add("d-none");
+        showPassword.classList.remove("d-none");
+    });
+
+
+
+
+
+    UnderlineLabelErrorCheck();
+
+    /*Hata olduğunda label ve underline renginin değiştirilmesi*/
+
+    function UnderlineLabelErrorCheck() {
+
+        var textInputs = document.querySelectorAll(".login-form-container input[type='text'],.login-form-container input[type='password']");
+
+        for (var i = 0; i < textInputs.length; i++) {
+
+
+            if (textInputs.item(i).nextElementSibling.nextElementSibling.classList.contains("field-validation-error")) {
+
+                textInputs.item(i).previousElementSibling.classList.add("error");
+
+                textInputs.item(i).nextElementSibling.classList.add("error");
+
+            }
+            else if (textInputs.item(i).nextElementSibling.nextElementSibling.classList.contains("field-validation-valid")) {
+
+                textInputs.item(i).previousElementSibling.classList.remove("error");
+
+                textInputs.item(i).nextElementSibling.classList.remove("error");
+
+
+            }
+
+
+        }
+    }
+
+
+
+    var textInputs = document.querySelectorAll(".login-form-container input[type='text'],.login-form-container input[type='password']");
+
+    for (var i = 0; i < textInputs.length; i++) {
+
+        textInputs.item(i).addEventListener("keyup", function (e) {
+
+            setTimeout(UnderlineLabelErrorCheck, 150);
+
+        });
+    }
+
+
+    var sendBtn = document.querySelector(".login-form-send-btn");
+
+    sendBtn.addEventListener("click", function (e) {
+
+        setTimeout(UnderlineLabelErrorCheck, 150);
+
+
+    });
+
+
+
+</script>
+
+
