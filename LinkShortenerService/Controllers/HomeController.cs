@@ -414,6 +414,14 @@ namespace LinkShortenerService.Controllers
 
 
 
+        public ActionResult Page404()
+        {
+            Response.StatusCode = 404;
+            Response.TrySkipIisCustomErrors = true;
+
+            return RedirectToAction("Home/Index");
+        }
+
 
     }
 
