@@ -60,9 +60,13 @@ namespace LinkShortenerService.Controllers
 
             var j = UrlsCollection.AsQueryable().GroupBy(x => x.CreatedBy).Select(y => new { UserID = y.Key, Total = y.Count() }).OrderByDescending(z => z.Total).Take(1).FirstOrDefault();
 
-            homeIndexViewModel.MostLinkShortener = UsersCollection.Find(x => x.ID == j.UserID).FirstOrDefault();
+            if (j!=null)
+            {
+                homeIndexViewModel.MostLinkShortener = UsersCollection.Find(x => x.ID == j.UserID).FirstOrDefault();
 
-            homeIndexViewModel.MostLinkShortenerLinkCount = j.Total;
+                homeIndexViewModel.MostLinkShortenerLinkCount = j.Total;
+            }
+           
 
             homeIndexViewModel.TotalShortenedLinkCount = UrlsCollection.AsQueryable().ToList().Count();
 
@@ -70,7 +74,11 @@ namespace LinkShortenerService.Controllers
 
             homeIndexViewModel.TotalActiveLinkCount = UrlsCollection.AsQueryable().Where(x => x.IsActive).ToList().Count();
 
-            homeIndexViewModel.AverageLinkCountCreatedByUsers = (int)(UrlsCollection.AsQueryable().GroupBy(x => x.CreatedBy).Select(y => new { UserID = y.Key, Total = y.Count() }).Average(z => z.Total));
+            if (UrlsCollection.AsQueryable().Count()>0)
+            {
+                homeIndexViewModel.AverageLinkCountCreatedByUsers = (int)(UrlsCollection.AsQueryable().GroupBy(x => x.CreatedBy).Select(y => new { UserID = y.Key, Total = y.Count() }).Average(z => z.Total));
+
+            }
 
             return View(homeIndexViewModel);
 
@@ -100,7 +108,7 @@ namespace LinkShortenerService.Controllers
         public ActionResult Signin(UserSigninViewModel model)
         {
 
-           
+
             ModelState.Remove("User.Password");
 
             IMongoDatabase database = client.GetDatabase("LinkShortenerService");
@@ -115,7 +123,7 @@ namespace LinkShortenerService.Controllers
             {
 
                 model.User.IsActive = true;
-                model.User.DateOfRegistration = DateTime.Now;
+                model.User.DateOfRegistration = DateTime.UtcNow.AddHours(3);
                 model.User.Password = Crypto.HashPassword(model.Password);
 
 
@@ -182,11 +190,11 @@ namespace LinkShortenerService.Controllers
             return View();
         }
 
+
+
         [HttpPost]
         public ActionResult Login(UserLoginViewModel model)
         {
-
-
 
             IMongoDatabase database = client.GetDatabase("LinkShortenerService");
 
@@ -419,9 +427,415 @@ namespace LinkShortenerService.Controllers
             Response.StatusCode = 404;
             Response.TrySkipIisCustomErrors = true;
 
-            return RedirectToAction("Home/Index");
+            return RedirectToAction("/Home/Index");
         }
 
+
+        [HttpPost]
+        public JsonResult UrlsStatisticsChart1(string userID)
+        {
+
+            IMongoDatabase mongoDatabase = client.GetDatabase("LinkShortenerService");
+
+            IMongoCollection<Urls> UrlsCollection = mongoDatabase.GetCollection<Urls>("Urls");
+
+            DateTime startDate = new DateTime(2022, 12, 13);
+
+            var now = DateTime.UtcNow.AddHours(3);
+            DateTime endDate = new DateTime(now.Year, now.Month, now.Day);
+
+            TimeSpan dif = endDate - startDate;
+
+            List<int> Yvalues = new List<int>();
+
+            List<string> Xvalues = new List<string>();
+
+            List<Urls> urls = new List<Urls>();
+
+            if (userID == null)
+            {
+                urls = UrlsCollection.AsQueryable().ToList();
+            }
+            else
+            {
+                ObjectId userId = new MongoDB.Bson.ObjectId(userID);
+                urls = UrlsCollection.AsQueryable().Where(x => x.CreatedBy == userId).ToList();
+            }
+
+
+
+            int counter = 0;
+
+            for (int i = 0; i <= dif.Days; i++)
+            {
+
+                for (int j = 0; j < urls.Count; j++)
+                {
+                    int year = urls[j].CreatedAt.Year;
+                    int month = urls[j].CreatedAt.Month;
+                    int day = urls[j].CreatedAt.Day;
+
+
+                    if (year == startDate.Year && month == startDate.Month && day == startDate.Day)
+                    {
+                        counter++;
+
+                    }
+
+
+
+                }
+
+                Yvalues.Add(counter);
+
+                counter = 0;
+
+                string Xvalue = startDate.Day + " " + startDate.Month + " " + startDate.Year;
+
+                Xvalues.Add(Xvalue);
+
+                startDate = startDate.AddDays(1);
+
+            }
+
+
+            //Chart chart1 = new Chart(1200,720);
+
+            //chart1.AddTitle("Zamana Bağlı Link Oluşturma Sayısı");
+            //chart1.AddLegend("Deneme123");
+
+            //chart1.AddSeries(name: "Test", chartType: "Column", xValue: Xvalues, yValues: Yvalues);
+
+            List<object> result = new List<object>();
+            result.Add(Xvalues);
+            result.Add(Yvalues);
+
+            return Json(result);
+
+        }
+
+
+        [HttpPost]
+        public JsonResult UrlsStatisticsChart2(string userID)
+        {
+
+            IMongoDatabase mongoDatabase = client.GetDatabase("LinkShortenerService");
+
+            IMongoCollection<Urls> UrlsCollection = mongoDatabase.GetCollection<Urls>("Urls");
+
+            DateTime startDate = new DateTime(2022, 12, 1);
+
+            DateTime endDate = startDate.AddYears(1);
+
+
+
+            List<int> Yvalues = new List<int>();
+
+            List<string> Xvalues = new List<string>();
+
+
+            List<Urls> urls = new List<Urls>();
+
+            if (userID == null)
+            {
+                urls = UrlsCollection.AsQueryable().ToList();
+            }
+            else
+            {
+                ObjectId userId = new MongoDB.Bson.ObjectId(userID);
+                urls = UrlsCollection.AsQueryable().Where(x => x.CreatedBy == userId).ToList();
+            }
+
+
+            int counter = 0;
+
+            for (int i = 0; i < 12; i++)
+            {
+
+                for (int j = 0; j < urls.Count; j++)
+                {
+                    int year = urls[j].CreatedAt.Year;
+                    int month = urls[j].CreatedAt.Month;
+
+                    if (year == startDate.Year && month == startDate.Month)
+                    {
+                        counter++;
+
+                    }
+
+
+                }
+
+                Yvalues.Add(counter);
+
+                counter = 0;
+
+                string monthText = "";
+
+                switch (startDate.Month.ToString())
+                {
+                    case "1":
+                        monthText = "Ocak";
+                        break;
+                    case "2":
+                        monthText = "Şubat";
+                        break;
+                    case "3":
+                        monthText = "Mart";
+                        break;
+                    case "4":
+                        monthText = "Nisan";
+                        break;
+                    case "5":
+                        monthText = "Mayıs";
+                        break;
+                    case "6":
+                        monthText = "Haziran";
+                        break;
+                    case "7":
+                        monthText = "Temmuz";
+                        break;
+                    case "8":
+                        monthText = "Ağustos";
+                        break;
+                    case "9":
+                        monthText = "Eylül";
+                        break;
+                    case "10":
+                        monthText = "Ekim";
+                        break;
+
+                    case "11":
+                        monthText = "Kasım";
+                        break;
+
+                    case "12":
+                        monthText = "Aralık";
+                        break;
+
+                }
+
+
+                string Xvalue = monthText + " " + startDate.Year;
+
+                Xvalues.Add(Xvalue);
+
+                startDate = startDate.AddMonths(1);
+
+            }
+
+
+            //Chart chart1 = new Chart(1200,720);
+
+            //chart1.AddTitle("Zamana Bağlı Link Oluşturma Sayısı");
+            //chart1.AddLegend("Deneme123");
+
+            //chart1.AddSeries(name: "Test", chartType: "Column", xValue: Xvalues, yValues: Yvalues);
+
+            List<object> result = new List<object>();
+            result.Add(Xvalues);
+            result.Add(Yvalues);
+
+            return Json(result);
+
+        }
+
+
+        [HttpPost]
+        public JsonResult UrlsStatisticsChart3(string urlID)
+        {
+
+            IMongoDatabase mongoDatabase = client.GetDatabase("LinkShortenerService");
+
+            IMongoCollection<UrlsAccessDatesLocations> urlsAccessDatesLocationsCollection = mongoDatabase.GetCollection<UrlsAccessDatesLocations>("UrlsAccessDatesLocations");
+
+            IMongoCollection<Urls> urlsCollection = mongoDatabase.GetCollection<Urls>("Urls");
+
+            DateTime startDate = new DateTime(2022, 12, 13);
+
+            var now = DateTime.UtcNow.AddHours(3);
+            DateTime endDate = new DateTime(now.Year, now.Month, now.Day);
+
+            TimeSpan dif = endDate - startDate;
+
+            List<int> Yvalues = new List<int>();
+
+            List<string> Xvalues = new List<string>();
+
+            List<UrlsAccessDatesLocations> urlsAccessDatesLocationsList = new List<UrlsAccessDatesLocations>();
+
+            List<Urls> urls = new List<Urls>();
+            List<DateTime> urlsAccessDate = new List<DateTime>();
+
+            ObjectId urlId = new MongoDB.Bson.ObjectId(urlID);
+
+            urlsAccessDatesLocationsList = urlsAccessDatesLocationsCollection.AsQueryable().Where(x => x.UrlID == urlId).ToList();
+
+
+
+
+
+            int counter = 0;
+
+            for (int i = 0; i <= dif.Days; i++)
+            {
+
+                for (int j = 0; j < urlsAccessDatesLocationsList.Count; j++)
+                {
+                    int year = urlsAccessDatesLocationsList[j].AccessDate.Year;
+                    int month = urlsAccessDatesLocationsList[j].AccessDate.Month;
+                    int day = urlsAccessDatesLocationsList[j].AccessDate.Day;
+
+
+                    if (year == startDate.Year && month == startDate.Month && day == startDate.Day)
+                    {
+                        counter++;
+
+                    }
+
+
+
+                }
+
+                Yvalues.Add(counter);
+
+                counter = 0;
+
+                string Xvalue = startDate.Day + " " + startDate.Month + " " + startDate.Year;
+
+                Xvalues.Add(Xvalue);
+
+                startDate = startDate.AddDays(1);
+
+            }
+
+
+            List<object> result = new List<object>();
+            result.Add(Xvalues);
+            result.Add(Yvalues);
+
+            return Json(result);
+
+        }
+
+
+        [HttpPost]
+        public JsonResult UrlsStatisticsChart4(string urlID)
+        {
+
+            IMongoDatabase mongoDatabase = client.GetDatabase("LinkShortenerService");
+
+            IMongoCollection<UrlsAccessDatesLocations> urlsAccessDatesLocationsCollection = mongoDatabase.GetCollection<UrlsAccessDatesLocations>("UrlsAccessDatesLocations");
+
+            IMongoCollection<Urls> UrlsCollection = mongoDatabase.GetCollection<Urls>("Urls");
+
+            DateTime startDate = new DateTime(2022, 12, 1);
+
+            DateTime endDate = startDate.AddYears(1);
+
+
+            List<int> Yvalues = new List<int>();
+
+            List<string> Xvalues = new List<string>();
+
+
+            List<UrlsAccessDatesLocations> urlsAccessDatesLocationsList = new List<UrlsAccessDatesLocations>();
+
+            List<Urls> urls = new List<Urls>();
+            List<DateTime> urlsAccessDate = new List<DateTime>();
+
+            ObjectId urlId = new MongoDB.Bson.ObjectId(urlID);
+
+            urlsAccessDatesLocationsList = urlsAccessDatesLocationsCollection.AsQueryable().Where(x => x.UrlID == urlId).ToList();
+
+
+
+
+            int counter = 0;
+
+            for (int i = 0; i < 12; i++)
+            {
+
+                for (int j = 0; j < urlsAccessDatesLocationsList.Count; j++)
+                {
+                    int year = urlsAccessDatesLocationsList[j].AccessDate.Year;
+                    int month = urlsAccessDatesLocationsList[j].AccessDate.Month;
+
+                    if (year == startDate.Year && month == startDate.Month)
+                    {
+                        counter ++;
+
+                    }
+
+
+                }
+
+                Yvalues.Add(counter);
+
+                counter = 0;
+
+                string monthText = "";
+
+                switch (startDate.Month.ToString())
+                {
+                    case "1":
+                        monthText = "Ocak";
+                        break;
+                    case "2":
+                        monthText = "Şubat";
+                        break;
+                    case "3":
+                        monthText = "Mart";
+                        break;
+                    case "4":
+                        monthText = "Nisan";
+                        break;
+                    case "5":
+                        monthText = "Mayıs";
+                        break;
+                    case "6":
+                        monthText = "Haziran";
+                        break;
+                    case "7":
+                        monthText = "Temmuz";
+                        break;
+                    case "8":
+                        monthText = "Ağustos";
+                        break;
+                    case "9":
+                        monthText = "Eylül";
+                        break;
+                    case "10":
+                        monthText = "Ekim";
+                        break;
+
+                    case "11":
+                        monthText = "Kasım";
+                        break;
+
+                    case "12":
+                        monthText = "Aralık";
+                        break;
+
+                }
+
+
+                string Xvalue = monthText + " " + startDate.Year;
+
+                Xvalues.Add(Xvalue);
+
+                startDate = startDate.AddMonths(1);
+
+            }
+
+
+            List<object> result = new List<object>();
+            result.Add(Xvalues);
+            result.Add(Yvalues);
+
+            return Json(result);
+
+        }
 
     }
 

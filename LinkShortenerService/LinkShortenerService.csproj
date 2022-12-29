@@ -237,6 +237,7 @@
     <Compile Include="Models\ViewModels\LinkDetailPartialViewModel.cs" />
     <Compile Include="Models\ViewModels\LinkEditOffcanvasViewModel.cs" />
     <Compile Include="Models\ViewModels\UserCreateShortUrlViewModel.cs" />
+    <Compile Include="Models\ViewModels\UserDashboardViewModel.cs" />
     <Compile Include="Models\ViewModels\UserLinksViewModel.cs" />
     <Compile Include="Models\ViewModels\UserLoginViewModel.cs" />
     <Compile Include="Models\ViewModels\UserProfileViewModel.cs" />
@@ -265,13 +266,14 @@
     <Content Include="Files\bg0.jpg" />
     <Content Include="Files\bg1.jpg" />
     <Content Include="Files\content0.jpg" />
-    <Content Include="Files\deneme3.jpg" />
     <Content Include="Files\link-3.svg" />
     <Content Include="Files\logo.png" />
+    <Content Include="Files\ms-icon-310x310.png" />
     <Content Include="Files\person.png" />
+    <Content Include="Files\Uploads\Users\Images\63945cdcdf20a11426175fd2_mehmet_arda_arda_yüksel.jpeg" />
+    <Content Include="Files\Uploads\Users\Images\63945cdcdf20a11426175fd2_mehmet_arda_yüksel.jpeg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Index.html" />
     <Content Include="mongocrypt.dll" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -343,10 +345,10 @@
     <Content Include="Views\User\UserProfile.cshtml" />
     <Content Include="Views\Shared\_UserLayoutHeaderPartialView.cshtml" />
     <Content Include="Views\Shared\_UserLayoutSideNavBarPartialView.cshtml" />
+    <Content Include="Views\Home\UrlsStatisticsChart1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Uploads\Users\Images\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

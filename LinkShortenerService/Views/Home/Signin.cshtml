@@ -8,7 +8,7 @@
 
 
 
-<div class="signin-wrapper">
+<div class="signin-wrapper" style="overflow:hidden;">
 
     <div class="signin-banner">
 
@@ -29,11 +29,11 @@
             </div>
 
             <div class="signin-form-input-container mt-5">
-                @Html.LabelFor(x => x.User.Name, new { @class = "signin-form-input-label" })
+                @Html.LabelFor(x => x.User.Name, new { @class = "signin-form-input-label active" })
 
-                @Html.TextBoxFor(x => x.User.Name, new { @class = "signin-form-input", autocomplete = "off" })
+                @Html.TextBoxFor(x => x.User.Name, new { @class = "signin-form-input active", autocomplete = "off",autofocus="true" })
 
-                <div class="input-underline"></div>
+                <div class="input-underline active"></div>
 
                 @Html.ValidationMessageFor(x => x.User.Name, "", new { @class = "signin-form-input-validation-message" })
 
@@ -107,139 +107,132 @@
 
 <script>
 
+    document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    var signinInputs = document.querySelectorAll(".signin-form-input-container .signin-form-input");
-    var signinInputLabels = document.querySelectorAll(".signin-form-input-container .signin-form-input-label");
-    var signinInputUnderlines = document.querySelectorAll(".signin-form-input-container .input-underline");
+        var signinInputs = document.querySelectorAll(".signin-form-input-container .signin-form-input");
+        var signinInputLabels = document.querySelectorAll(".signin-form-input-container .signin-form-input-label");
+        var signinInputUnderlines = document.querySelectorAll(".signin-form-input-container .input-underline");
 
 
 
 
-    for (var i = 0; i < signinInputs.length; i++) {
+        for (var i = 0; i < signinInputs.length; i++) {
 
-        if (signinInputs.item(i).value != "") {
-            signinInputs.item(i).previousElementSibling.classList.add("active");
+            if (signinInputs.item(i).value != "") {
+                signinInputs.item(i).previousElementSibling.classList.add("active");
 
-        }
+            }
 
-        signinInputs.item(i).addEventListener("focus", function (e) {
+            signinInputs.item(i).addEventListener("focus", function (e) {
 
-            e.stopPropagation();
+                e.stopPropagation();
 
-            for (var i = 0; i < signinInputLabels.length; i++) {
+                for (var i = 0; i < signinInputLabels.length; i++) {
 
-                if (signinInputLabels.item(i).nextElementSibling.value == "" && !signinInputLabels.item(i).classList.contains("except")) {
-                    signinInputLabels.item(i).classList.remove("active");
+                    if (signinInputLabels.item(i).nextElementSibling.value == "" && !signinInputLabels.item(i).classList.contains("except")) {
+                        signinInputLabels.item(i).classList.remove("active");
+                    }
+
                 }
 
+                for (var i = 0; i < signinInputUnderlines.length; i++) {
+                    signinInputUnderlines.item(i).classList.remove("active");
+                }
+
+
+                this.previousElementSibling.classList.add("active");
+                this.nextElementSibling.classList.add("active");
+
+
+            })
+        }
+
+
+
+
+
+
+        /*Şifre aç kapa işlemi*/
+
+
+        var inputPassword = document.querySelector("#Password");
+
+        var showPassword = document.querySelector(".show-password .show");
+        var hidePassword = document.querySelector(".show-password .hide");
+
+
+        showPassword.addEventListener("click", function (e) {
+            inputPassword.setAttribute("type", "text");
+            showPassword.classList.add("d-none");
+            hidePassword.classList.remove("d-none");
+        });
+
+
+        hidePassword.addEventListener("click", function (e) {
+            inputPassword.setAttribute("type", "password");
+            hidePassword.classList.add("d-none");
+            showPassword.classList.remove("d-none");
+        });
+
+
+
+        UnderlineLabelErrorCheck();
+
+        /*Hata olduğunda label ve underline renginin değiştirilmesi*/
+
+        function UnderlineLabelErrorCheck() {
+
+            var textInputs = document.querySelectorAll(".signin-form-container input[type='text'],.signin-form-container input[type='password']");
+
+            for (var i = 0; i < textInputs.length; i++) {
+
+
+                if (textInputs.item(i).nextElementSibling.nextElementSibling.classList.contains("field-validation-error")) {
+
+                    textInputs.item(i).previousElementSibling.classList.add("error");
+
+                    textInputs.item(i).nextElementSibling.classList.add("error");
+
+                }
+                else if (textInputs.item(i).nextElementSibling.nextElementSibling.classList.contains("field-validation-valid")) {
+
+                    textInputs.item(i).previousElementSibling.classList.remove("error");
+
+                    textInputs.item(i).nextElementSibling.classList.remove("error");
+
+
+                }
+
+
             }
-
-            for (var i = 0; i < signinInputUnderlines.length; i++) {
-                signinInputUnderlines.item(i).classList.remove("active");
-            }
+        }
 
 
-            this.previousElementSibling.classList.add("active");
-            this.nextElementSibling.classList.add("active");
-
-
-        })
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*Şifre aç kapa işlemi*/
-
-
-    var inputPassword = document.querySelector("#Password");
-
-    var showPassword = document.querySelector(".show-password .show");
-    var hidePassword = document.querySelector(".show-password .hide");
-
-
-    showPassword.addEventListener("click", function (e) {
-        inputPassword.setAttribute("type", "text");
-        showPassword.classList.add("d-none");
-        hidePassword.classList.remove("d-none");
-    });
-
-
-    hidePassword.addEventListener("click", function (e) {
-        inputPassword.setAttribute("type", "password");
-        hidePassword.classList.add("d-none");
-        showPassword.classList.remove("d-none");
-    });
-
-
-
-    UnderlineLabelErrorCheck();
-
-    /*Hata olduğunda label ve underline renginin değiştirilmesi*/
-
-    function UnderlineLabelErrorCheck() {
 
         var textInputs = document.querySelectorAll(".signin-form-container input[type='text'],.signin-form-container input[type='password']");
 
         for (var i = 0; i < textInputs.length; i++) {
 
+            textInputs.item(i).addEventListener("keyup", function (e) {
 
-            if (textInputs.item(i).nextElementSibling.nextElementSibling.classList.contains("field-validation-error")) {
+                setTimeout(UnderlineLabelErrorCheck, 150);
 
-                textInputs.item(i).previousElementSibling.classList.add("error");
-
-                textInputs.item(i).nextElementSibling.classList.add("error");
-
-            }
-            else if (textInputs.item(i).nextElementSibling.nextElementSibling.classList.contains("field-validation-valid")) {
-
-                textInputs.item(i).previousElementSibling.classList.remove("error");
-
-                textInputs.item(i).nextElementSibling.classList.remove("error");
-
-
-            }
-
-
+            });
         }
-    }
 
 
 
-    var textInputs = document.querySelectorAll(".signin-form-container input[type='text'],.signin-form-container input[type='password']");
 
-    for (var i = 0; i < textInputs.length; i++) {
+        var sendBtn = document.querySelector(".signin-form-send-btn");
 
-        textInputs.item(i).addEventListener("keyup", function (e) {
+        sendBtn.addEventListener("click", function (e) {
 
             setTimeout(UnderlineLabelErrorCheck, 150);
 
+
         });
-    }
-
-
-
-
-    var sendBtn = document.querySelector(".signin-form-send-btn");
-
-    sendBtn.addEventListener("click", function (e) {
-
-        setTimeout(UnderlineLabelErrorCheck, 150);
 
 
     });

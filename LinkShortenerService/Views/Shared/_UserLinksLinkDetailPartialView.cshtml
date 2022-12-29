@@ -51,10 +51,12 @@
 
         <div class="shortened-url-buttons-container">
 
+           
+
             <div class="shortened-url-container">
-                <a class="shortened-url">
+                <button class="shortened-url">
                     @(HttpContext.Current.Request.Url.Authority+"/"+Model.Url.ShortenedUrl)
-                </a>
+                </button>
             </div>
 
 
@@ -77,6 +79,8 @@
 
         <div class="validity-date">
             Son Geçerlilik Süresi:
+
+
             @{
 
                 var urlValidityDate = Model.Url.ValidityDate;
@@ -96,7 +100,7 @@
 
                 DateTime validityDate = new DateTime(year, month, day, hour, minute, 0);
 
-                if (validityDate < DateTime.Now)
+                if (validityDate < DateTime.UtcNow.AddHours(3))
                 {
                     <span style="font-weight: 700; color: #B91C1C; background: #FECACA; padding: 5px; border-radius: 3px; ">@(splitYMD[0]+"-"+ splitYMD[1]+"-"+ splitYMD[2]+" "+ splitHm[0] + ":"+ splitHm[1])</span>
                     <span style="color: white; background: #EF4444; padding: 5px; border-radius: 3px; ">Link Durumu: <i class="fa-regular fa-rectangle-xmark"></i></span>
@@ -104,13 +108,15 @@
                 }
                 else
                 {
-                    <span style="font-weight: 700; color: #A16207; background: #FEF08A;padding:5px; border-radius:3px;">@(splitYMD[2]+"-"+ splitYMD[1]+"-"+ splitYMD[0]+" "+ splitHm[0] + ":"+ splitHm[1])</span>
+                    <span style="font-weight: 700; color: #C2410C; background: #FEF08A; padding: 5px; border-radius: 3px;">@(splitYMD[2]+"-"+ splitYMD[1]+"-"+ splitYMD[0]+" "+ splitHm[0] + ":"+ splitHm[1])</span>
                     <span style="color: #166534; background: #22C55E; padding: 5px; border-radius: 3px; ">Link Durumu: <i class="fa-regular fa-square-check"></i></span>
 
                 }
 
 
             }
+
+
         </div>
 
     </div>
@@ -123,6 +129,21 @@
         <i class="fa-solid fa-chart-simple"></i>
         <i class="fa-solid fa-chart-simple"></i>
         <div class="text">Toplam Tıklanma</div>
+
+
+        <div class="row w-100 pt-5">
+
+            <div class="col-12 my-3">
+                <canvas id="UrlStatistic3" style="max-width:600px;"></canvas>
+            </div>
+
+            <div class="col-12 my-3">
+                <canvas id="UrlStatistic4" style="max-width:600px;"></canvas>
+            </div>
+
+
+
+        </div>
 
     </div>
 

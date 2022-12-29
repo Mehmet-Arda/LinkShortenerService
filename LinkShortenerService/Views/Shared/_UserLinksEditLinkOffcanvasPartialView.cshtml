@@ -28,7 +28,7 @@
 
             <div class="form-input-container">
                 @Html.LabelFor(x => x.Url.TagName, new { @class = "form-label" })
-                @Html.TextBoxFor(x => x.Url.TagName, new { @class = "form-input" })
+                @Html.TextBoxFor(x => x.Url.TagName, new { @class = "form-input", autocomplete = "off" })
                 <div class="form-input-validation-message"></div>
             </div>
 

@@ -125,404 +125,486 @@
 </div>
 
 
-<script src="~/Scripts/jquery-3.6.1.min.js"></script>
-<script src="~/Scripts/bootstrap.bundle.min.js"></script>
-<script src="~/Scripts/jquery.validate.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 <script>
 
-
-    var sideNavBarLinks = document.querySelectorAll(".side-nav-bar .side-menu a");
-
-    var currentUrl = window.location.href;
-
-    if (currentUrl.includes("/kullanici/yeni-url-olustur")) {
-
-    }
-    else if (currentUrl.includes("/kullanici/dashboard")) {
-        sideNavBarLinks.item(2).classList.add("active");
-    }
-    else if (currentUrl.includes("/kullanici/profilim")) {
-        sideNavBarLinks.item(4).classList.add("active");
-    }
-    else if (currentUrl.includes("/kullanici/linklerim")) {
-        sideNavBarLinks.item(3).classList.add("active");
-    }
-
-    var profileMeBtn = document.querySelector(".profile-me");
-    var profileMeDropdown = document.querySelector(".profile-me-dropdown");
-
-    /*const { Modal } = require("../../Scripts/bootstrap.bundle");*/
-
-
-    var profileMeBtn = document.querySelector(".profile-me");
-    var profileMeDropdown = document.querySelector(".profile-me-dropdown");
-
-
-    profileMeBtn.addEventListener("click", function () {
-
-
-        profileMeBtn.classList.toggle("active");
-        profileMeDropdown.classList.toggle("active");
-
-
-    });
+    document.addEventListener("DOMContentLoaded", function () {
 
 
 
+        var sideNavBarLinks = document.querySelectorAll(".side-nav-bar .side-menu a");
+
+        var currentUrl = window.location.href;
 
 
-    var linkBtnCheckBoxes = document.querySelectorAll(".links-btn-container .checkbox");
+        if (currentUrl.includes("/kullanici/yeni-url-olustur") || currentUrl.includes("/User/CreateShortUrl")) {
 
-    var linkBtns = document.querySelectorAll(".links-btn-container .link-btn");
-
-    var linkDetailContainer = document.querySelector(".link-detail-inner-container");
-
-
-    if (linkBtns.length > 0) {
-
-
-
-        function linksOperations() {
-
-            var linkBtnCheckBoxes = document.querySelectorAll(".links-btn-container .checkbox");
-
-            var linkBtns = document.querySelectorAll(".links-btn-container .link-btn");
-
-            var linkDetailContainer = document.querySelector(".link-detail-inner-container");
-
-            for (var i = 0; i < linkBtnCheckBoxes.length; i++) {
-
-                linkBtnCheckBoxes.item(i).addEventListener("click", function () {
-                    this.classList.toggle("active");
-                });
-
-            }
-
-            /*linkBtns.item(0).classList.add("active");*/
-
-            for (var i = 0; i < linkBtns.length; i++) {
-
-                linkBtns.item(i).addEventListener("click", function (e) {
-
-                    if (e.target.className != "checkbox active" && e.target.className != "fa-solid fa-check") {
-
-                        for (var j = 0; j < linkBtns.length; j++) {
-                            linkBtns.item(j).classList.remove("active");
-                        }
-
-                        this.classList.add("active");
-
-                        var urlId = this.getAttribute("url-id");
-                        var linkDetailLoader = document.querySelector("#link-detail-loader");
-
-                        $.ajax({
-                            method: "POST",
-                            url: "/User/GetLinkDetailPartialView/",
-                            data: { urlID: urlId },
-                            beforeSend: function () {
-                                /*linkDetailLoader.classList.remove("d-none");*/
-                            }
-
-                        }).done(function (result) {
-
-                            linkDetailContainer.innerHTML = result;
-
-                            linkDetailButtonsOperations();
-
-                            /*linkDetailLoader.classList.add("d-none");*/
-                        });
-                    }
-
-
-
-
-                });
-
-            }
+        }
+        else if (currentUrl.includes("/kullanici/dashboard") || currentUrl.includes("/User/Dashboard")) {
+            sideNavBarLinks.item(2).classList.add("active");
+        }
+        else if (currentUrl.includes("/kullanici/profilim") || currentUrl.includes("/User/UserProfile")) {
+            sideNavBarLinks.item(4).classList.add("active");
+        }
+        else if (currentUrl.includes("/kullanici/linklerim") || currentUrl.includes("/User/Links")) {
+            sideNavBarLinks.item(3).classList.add("active");
         }
 
+        var profileMeBtn = document.querySelector(".profile-me");
+        var profileMeDropdown = document.querySelector(".profile-me-dropdown");
 
+        /*const { Modal } = require("../../Scripts/bootstrap.bundle");*/
 
 
-        linksOperations();
+        var profileMeBtn = document.querySelector(".profile-me");
+        var profileMeDropdown = document.querySelector(".profile-me-dropdown");
 
 
+        profileMeBtn.addEventListener("click", function () {
 
-        linkDetailButtonsOperations();
+            profileMeBtn.classList.toggle("active");
+            profileMeDropdown.classList.toggle("active");
 
-        function linkDetailButtonsOperations() {
 
-            /*Kopyalama ve redirect işlemi */
-            var shortenedUrlRedirectBtn = document.querySelector(".link-detail-content .shortened-url");
+        });
 
-            var shortenedUrlCopyBtn = document.querySelector(".link-detail-content .copy");
-            var shortenedUrlCopyBtnText = document.querySelector(".link-detail-content .copy .copy-text");
 
 
-            shortenedUrlRedirectBtn.addEventListener("click", function () {
 
-                var url = "https://" + shortenedUrlRedirectBtn.innerHTML.trim();
 
-                window.open(url, "_blank");
-            });
+        var linkBtnCheckBoxes = document.querySelectorAll(".links-btn-container .checkbox");
 
-            shortenedUrlCopyBtn.addEventListener("click", function () {
+        var linkBtns = document.querySelectorAll(".links-btn-container .link-btn");
 
-                navigator.clipboard.writeText(shortenedUrlRedirectBtn.innerHTML.trim());
+        var linkDetailContainer = document.querySelector(".link-detail-inner-container");
 
-                shortenedUrlCopyBtnText.innerHTML = "Kopyalandı!";
 
-                setTimeout(function () {
-                    shortenedUrlCopyBtnText.innerHTML = "Kopyala";
-                }, 4000);
-            });
+        if (linkBtns.length > 0) {
 
 
 
+            function linksOperations() {
 
+                var linkBtnCheckBoxes = document.querySelectorAll(".links-btn-container .checkbox");
 
-            /*Silme modalının açılması*/
+                var linkBtns = document.querySelectorAll(".links-btn-container .link-btn");
 
+                var linkDetailContainer = document.querySelector(".link-detail-inner-container");
 
-            var linkDeleteBtn = document.querySelector(".link-detail .delete");
+                for (var i = 0; i < linkBtnCheckBoxes.length; i++) {
 
-            var linkDeleteID = linkDeleteBtn.getAttribute("url-id");
+                    linkBtnCheckBoxes.item(i).addEventListener("click", function () {
+                        this.classList.toggle("active");
+                    });
 
-            var linkDeleteModal = document.querySelector("#LinkDeleteModal");
+                }
 
-            var willDeleteLinkInput = document.querySelector("#LinkDeleteModal #willDeleteLinkID");
+                /*linkBtns.item(0).classList.add("active");*/
 
-            linkDeleteBtn.addEventListener("click", function () {
+                for (var i = 0; i < linkBtns.length; i++) {
 
-                var modal = new bootstrap.Modal(linkDeleteModal);
-                modal.show();
+                    linkBtns.item(i).addEventListener("click", function (e) {
 
-                linkDeleteModal.setAttribute("url-id", linkDeleteID);
+                        if (e.target.className != "checkbox active" && e.target.className != "fa-solid fa-check") {
 
-                willDeleteLinkInput.setAttribute("value", linkDeleteID);
+                            for (var j = 0; j < linkBtns.length; j++) {
+                                linkBtns.item(j).classList.remove("active");
+                            }
 
-            });
+                            this.classList.add("active");
 
+                            var urlId = this.getAttribute("url-id");
+                            var linkDetailLoader = document.querySelector("#link-detail-loader");
 
-            /*Editleme offcanvasının açılması*/
+                            $.ajax({
+                                method: "POST",
+                                url: "/User/GetLinkDetailPartialView/",
+                                data: { urlID: urlId },
+                                beforeSend: function () {
+                                    /*linkDetailLoader.classList.remove("d-none");*/
+                                }
 
-            var linkEditBtn = document.querySelector(".link-detail .edit");
+                            }).done(function (result) {
 
-            var linkEditID = linkEditBtn.getAttribute("url-id");
+                                linkDetailContainer.innerHTML = result;
 
-            var LinkEditOffcanvasContainer = document.querySelector("#LinkEditOffcanvasContainer");
+                                linkDetailButtonsOperations();
 
-
-            linkEditBtn.addEventListener("click", function () {
-
-                $.ajax({
-                    method: "POST",
-                    data: { urlID: linkEditID },
-                    url: "/User/GetLinkEditOffcanvasPartialView/"
-
-                }).done(function (result) {
-
-                    LinkEditOffcanvasContainer.innerHTML = result;
-
-                    var linkEditOffcanvas = document.querySelector("#LinkEditOffcanvas");
-                    offCanvas = new bootstrap.Offcanvas(linkEditOffcanvas);
-
-                    offCanvas.show();
-
-
-                    var LinkEditOffcanvas = document.querySelector("#LinkEditOffcanvas");
-
-
-                    var linkTitleInput = document.querySelector("#Url_Title");
-                    var linkTitleInputLabel = linkTitleInput.previousElementSibling;
-                    var linkTitleInputValidationMessage = linkTitleInput.nextElementSibling;
-
-                    var linkTagInput = document.querySelector("#Url_TagName");
-                    var linkTagInputLabel = linkTagInput.previousElementSibling;
-                    var linkTagInputValidationMessage = linkTagInput.nextElementSibling;
-
-
-                    var linkAliasInput = document.querySelector("#HalfUrlAlias");
-                    var linkAliasInputLabel = linkAliasInput.parentElement.previousElementSibling;
-                    var linkAliasInputValidationMessage = linkAliasInput.parentElement.nextElementSibling;
-
-
-                    var linkValidityDateInput = document.querySelector("#Url_ValidityDate");
-                    var linkValidityDateInputLabel = linkValidityDateInput.previousElementSibling;
-                    var linkValidityDateInputValidationMessage = linkValidityDateInput.nextElementSibling;
-
-
-                    var EditLinkSubmitBtn = document.querySelector("#EditLinkSubmitBtn");
-
-
-
-                    var offcanvasValidationSummary = document.querySelector("#EditLinkOffcanvasForm .validation-summary");
-
-
-
-                    LinkEditOffcanvas.addEventListener("shown.bs.offcanvas", event => {
-
-                        linkTitleInput.setSelectionRange(linkTitleInput.value.length, linkTitleInput.value.length);
-                        linkTitleInput.focus();
-                    })
-
-
-                    function linkTitleInputValidate() {
-
-                        if (linkTitleInput.value.length == 0) {
-                            linkTitleInputLabel.classList.remove("error");
-                            linkTitleInput.classList.remove("error");
-                            linkTitleInputValidationMessage.innerText = "";
-                            return true;
-                        }
-                        else if (linkTitleInput.value.length < 4 || linkTitleInput.value.length > 30) {
-
-                            linkTitleInputLabel.classList.add("error");
-                            linkTitleInput.classList.add("error");
-                            linkTitleInputValidationMessage.innerText = "Başlık uzunluğu 4 ile 30 karakter aralığında olmalıdır.";
-                            return false;
-
-                        }
-                        else {
-                            linkTitleInputLabel.classList.remove("error");
-                            linkTitleInput.classList.remove("error");
-                            linkTitleInputValidationMessage.innerText = "";
-                            return true;
-                        }
-                    }
-
-
-
-                    function linkTagInputValidate() {
-
-                        var regex = /^[A-Za-z0-9]*$/;
-
-                        if (!regex.test(linkTagInput.value)) {
-                            linkTagInputLabel.classList.add("error");
-                            linkTagInput.classList.add("error");
-                            linkTagInputValidationMessage.innerText = "Etiket, boşluk ve türkçe karakter içeremez.";
-                            return false;
-                        }
-                        else if (linkTagInput.value.length == 0) {
-                            linkTagInputLabel.classList.remove("error");
-                            linkTagInput.classList.remove("error");
-                            linkTagInputValidationMessage.innerText = "";
-                            return true;
-                        }
-                        else if (linkTagInput.value.length < 3 || linkTagInput.value.length > 15) {
-
-                            linkTagInputLabel.classList.add("error");
-                            linkTagInput.classList.add("error");
-                            linkTagInputValidationMessage.innerText = "Etiket uzunluğu 3 ile 15 karakter aralığında olmalıdır.";
-                            return false;
-
-                        } else {
-
-                            linkTagInputLabel.classList.remove("error");
-                            linkTagInput.classList.remove("error");
-                            linkTagInputValidationMessage.innerText = "";
-                            return true;
-                        }
-                    }
-
-                    function linkValidityDateInputValidate() {
-
-                        var now = new Date();
-
-                        //2034-06-08T00:00
-
-                        //var inputYear = linkValidityDateInput.value.substring(0, 4);
-                        //var inputMonth = linkValidityDateInput.value.substring(5, 7);
-                        //var inputDay = linkValidityDateInput.value.substring(8, 10);
-                        //var inputMinute = linkValidityDateInput.value.substring(11, 13);
-                        //var inputSecond = linkValidityDateInput.value.substring(14, 16);
-
-                        var formatedValidityDateInput = new Date(linkValidityDateInput.value.toString());
-
-                        if (linkValidityDateInput.value == "") {
-                            linkValidityDateInputLabel.classList.add("error");
-                            linkValidityDateInput.classList.add("error");
-                            linkValidityDateInputValidationMessage.innerText = "Geçerlilik tarihi, boş geçilemez.";
-                            return false;
-                        }
-                        else if (formatedValidityDateInput < now) {
-                            linkValidityDateInputLabel.classList.add("error");
-                            linkValidityDateInput.classList.add("error");
-                            linkValidityDateInputValidationMessage.innerText = "Geçerlilik tarihi, geçmiş tarih olamaz.";
-                            return false;
-                        }
-                        else if (formatedValidityDateInput > now.setFullYear((now.getFullYear() + 10))) {
-                            linkValidityDateInputLabel.classList.add("error");
-                            linkValidityDateInput.classList.add("error");
-                            linkValidityDateInputValidationMessage.innerText = "Geçerlilik tarihi, 10 yılı aşkın olamaz.";
-                            return false;
-                        }
-                        else {
-                            linkValidityDateInputLabel.classList.remove("error");
-                            linkValidityDateInput.classList.remove("error");
-                            linkValidityDateInputValidationMessage.innerText = "";
-                            return true;
+                                /*linkDetailLoader.classList.add("d-none");*/
+                            });
                         }
 
-                    }
-
-                    linkValidityDateInput.addEventListener("change", function (e) {
 
 
-                        linkValidityDateInputValidate();
-
-                        if (linkTitleInput.classList.contains("error") || linkTagInput.classList.contains("error") || linkAliasInput.classList.contains("error") || linkValidityDateInput.classList.contains("error")) {
-
-                            EditLinkSubmitBtn.classList.add("btn-disabled");
-                            EditLinkSubmitBtn.setAttribute("disabled", true);
-
-                        } else {
-                            EditLinkSubmitBtn.classList.remove("btn-disabled");
-                            EditLinkSubmitBtn.setAttribute("disabled", false);
-                            EditLinkSubmitBtn.removeAttribute("disabled");
-                        }
 
                     });
 
+                }
+            }
 
 
-                    function CheckUrlAlias(linkAliasInputValidate) {
 
 
-                        $.ajax({
-                            method: "POST",
-                            url: "/User/CheckUrlAlias/",
-                            data: { urlAlias: linkAliasInput.value, urlId: linkEditID }
+            linksOperations();
 
-                        }).done(function (result) {
 
-                            var i;
 
-                            if (result == "ok") {
+            linkDetailButtonsOperations();
 
-                                offcanvasValidationSummary.innerHTML = "";
-                                offcanvasValidationSummary.classList.remove("error");
-                                i = true;
+            function linkDetailButtonsOperations() {
+
+                /*Kopyalama ve redirect işlemi */
+                var shortenedUrlRedirectBtn = document.querySelector(".link-detail-content .shortened-url");
+
+                var shortenedUrlCopyBtn = document.querySelector(".link-detail-content .copy");
+                var shortenedUrlCopyBtnText = document.querySelector(".link-detail-content .copy .copy-text");
+
+
+                shortenedUrlRedirectBtn.addEventListener("click", function () {
+                   
+                    var url = window.location.protocol + "//" + shortenedUrlRedirectBtn.innerHTML.trim();
+
+                    window.open(url, "_blank");
+
+                });
+
+
+                
+
+
+
+
+
+                shortenedUrlCopyBtn.addEventListener("click", function () {
+
+                    try {
+                        navigator.clipboard.writeText(window.location.protocol + "//" + shortenedUrlRedirectBtn.innerHTML.trim());
+
+                        shortenedUrlCopyBtnText.innerHTML = "Kopyalandı!";
+
+                        setTimeout(function () {
+                            shortenedUrlCopyBtnText.innerHTML = "Kopyala";
+                        }, 4000);
+
+                    } catch (e) {
+
+                    }
+                   
+                });
+
+
+
+
+
+                /*Silme modalının açılması*/
+
+
+                var linkDeleteBtn = document.querySelector(".link-detail .delete");
+
+                var linkDeleteID = linkDeleteBtn.getAttribute("url-id");
+
+                var linkDeleteModal = document.querySelector("#LinkDeleteModal");
+
+                var willDeleteLinkInput = document.querySelector("#LinkDeleteModal #willDeleteLinkID");
+
+                linkDeleteBtn.addEventListener("click", function () {
+
+                    var modal = new bootstrap.Modal(linkDeleteModal);
+                    modal.show();
+
+                    linkDeleteModal.setAttribute("url-id", linkDeleteID);
+
+                    willDeleteLinkInput.setAttribute("value", linkDeleteID);
+
+                });
+
+
+                /*Editleme offcanvasının açılması*/
+
+                var linkEditBtn = document.querySelector(".link-detail .edit");
+
+                var linkEditID = linkEditBtn.getAttribute("url-id");
+
+                var LinkEditOffcanvasContainer = document.querySelector("#LinkEditOffcanvasContainer");
+
+
+                linkEditBtn.addEventListener("click", function () {
+
+                    $.ajax({
+                        method: "POST",
+                        data: { urlID: linkEditID },
+                        url: "/User/GetLinkEditOffcanvasPartialView/"
+
+                    }).done(function (result) {
+
+                        LinkEditOffcanvasContainer.innerHTML = result;
+
+                        var linkEditOffcanvas = document.querySelector("#LinkEditOffcanvas");
+                        offCanvas = new bootstrap.Offcanvas(linkEditOffcanvas);
+
+                        offCanvas.show();
+
+
+                        var LinkEditOffcanvas = document.querySelector("#LinkEditOffcanvas");
+
+
+                        var linkTitleInput = document.querySelector("#Url_Title");
+                        var linkTitleInputLabel = linkTitleInput.previousElementSibling;
+                        var linkTitleInputValidationMessage = linkTitleInput.nextElementSibling;
+
+                        var linkTagInput = document.querySelector("#Url_TagName");
+                        var linkTagInputLabel = linkTagInput.previousElementSibling;
+                        var linkTagInputValidationMessage = linkTagInput.nextElementSibling;
+
+
+                        var linkAliasInput = document.querySelector("#HalfUrlAlias");
+                        var linkAliasInputLabel = linkAliasInput.parentElement.previousElementSibling;
+                        var linkAliasInputValidationMessage = linkAliasInput.parentElement.nextElementSibling;
+
+
+                        var linkValidityDateInput = document.querySelector("#Url_ValidityDate");
+                        var linkValidityDateInputLabel = linkValidityDateInput.previousElementSibling;
+                        var linkValidityDateInputValidationMessage = linkValidityDateInput.nextElementSibling;
+
+
+                        var EditLinkSubmitBtn = document.querySelector("#EditLinkSubmitBtn");
+
+
+
+                        var offcanvasValidationSummary = document.querySelector("#EditLinkOffcanvasForm .validation-summary");
+
+
+
+                        LinkEditOffcanvas.addEventListener("shown.bs.offcanvas", event => {
+
+                            linkTitleInput.setSelectionRange(linkTitleInput.value.length, linkTitleInput.value.length);
+                            linkTitleInput.focus();
+                        })
+
+
+                        function linkTitleInputValidate() {
+
+                            if (linkTitleInput.value.length == 0) {
+                                linkTitleInputLabel.classList.remove("error");
+                                linkTitleInput.classList.remove("error");
+                                linkTitleInputValidationMessage.innerText = "";
+                                return true;
+                            }
+                            else if (linkTitleInput.value.length < 4 || linkTitleInput.value.length > 50) {
+
+                                linkTitleInputLabel.classList.add("error");
+                                linkTitleInput.classList.add("error");
+                                linkTitleInputValidationMessage.innerText = "Başlık uzunluğu 4 ile 50 karakter aralığında olmalıdır.";
+                                return false;
 
                             }
-                            else if (result == "error") {
-
-                                offcanvasValidationSummary.innerHTML = "Girilen url halihazırda kullanılıyor.";
-                                offcanvasValidationSummary.classList.add("error");
-                                i = false;
+                            else {
+                                linkTitleInputLabel.classList.remove("error");
+                                linkTitleInput.classList.remove("error");
+                                linkTitleInputValidationMessage.innerText = "";
+                                return true;
                             }
+                        }
 
 
 
-                            if (linkAliasInputValidate(i)) {
-                                document.querySelector("#LinkEditOffcanvas").setAttribute("control", true);
+                        function linkTagInputValidate() {
+
+                            var regex = /^[A-Za-z0-9]*$/;
+
+                            if (!regex.test(linkTagInput.value)) {
+                                linkTagInputLabel.classList.add("error");
+                                linkTagInput.classList.add("error");
+                                linkTagInputValidationMessage.innerText = "Etiket, boşluk ve türkçe karakter içeremez.";
+                                return false;
+                            }
+                            else if (linkTagInput.value.length == 0) {
+                                linkTagInputLabel.classList.remove("error");
+                                linkTagInput.classList.remove("error");
+                                linkTagInputValidationMessage.innerText = "";
+                                return true;
+                            }
+                            else if (linkTagInput.value.length < 3 || linkTagInput.value.length > 15) {
+
+                                linkTagInputLabel.classList.add("error");
+                                linkTagInput.classList.add("error");
+                                linkTagInputValidationMessage.innerText = "Etiket uzunluğu 3 ile 15 karakter aralığında olmalıdır.";
+                                return false;
+
                             } else {
 
-                                document.querySelector("#LinkEditOffcanvas").setAttribute("control", false);
+                                linkTagInputLabel.classList.remove("error");
+                                linkTagInput.classList.remove("error");
+                                linkTagInputValidationMessage.innerText = "";
+                                return true;
+                            }
+                        }
+
+                        function linkValidityDateInputValidate() {
+
+                            var now = new Date();
+
+                            //2034-06-08T00:00
+
+
+                            var formatedValidityDateInput = new Date(linkValidityDateInput.value.toString());
+
+                            if (linkValidityDateInput.value == "") {
+                                linkValidityDateInputLabel.classList.add("error");
+                                linkValidityDateInput.classList.add("error");
+                                linkValidityDateInputValidationMessage.innerText = "Geçerlilik tarihi, boş geçilemez.";
+                                return false;
+                            }
+                            else if (formatedValidityDateInput < now) {
+                                linkValidityDateInputLabel.classList.add("error");
+                                linkValidityDateInput.classList.add("error");
+                                linkValidityDateInputValidationMessage.innerText = "Geçerlilik tarihi, geçmiş tarih olamaz.";
+                                return false;
+                            }
+                            else if (formatedValidityDateInput > now.setFullYear((now.getFullYear() + 10))) {
+                                linkValidityDateInputLabel.classList.add("error");
+                                linkValidityDateInput.classList.add("error");
+                                linkValidityDateInputValidationMessage.innerText = "Geçerlilik tarihi, 10 yılı aşkın olamaz.";
+                                return false;
+                            }
+                            else {
+                                linkValidityDateInputLabel.classList.remove("error");
+                                linkValidityDateInput.classList.remove("error");
+                                linkValidityDateInputValidationMessage.innerText = "";
+                                return true;
                             }
 
+                        }
+
+                        linkValidityDateInput.addEventListener("change", function (e) {
+
+
+                            linkValidityDateInputValidate();
+
+                            if (linkTitleInput.classList.contains("error") || linkTagInput.classList.contains("error") || linkAliasInput.classList.contains("error") || linkValidityDateInput.classList.contains("error")) {
+
+                                EditLinkSubmitBtn.classList.add("btn-disabled");
+                                EditLinkSubmitBtn.setAttribute("disabled", true);
+
+                            } else {
+                                EditLinkSubmitBtn.classList.remove("btn-disabled");
+                                EditLinkSubmitBtn.setAttribute("disabled", false);
+                                EditLinkSubmitBtn.removeAttribute("disabled");
+                            }
+
+                        });
+
+
+
+                        function CheckUrlAlias(linkAliasInputValidate) {
+
+
+                            $.ajax({
+                                method: "POST",
+                                url: "/User/CheckUrlAlias/",
+                                data: { urlAlias: linkAliasInput.value, urlId: linkEditID }
+
+                            }).done(function (result) {
+
+                                var i;
+
+                                if (result == "ok") {
+
+                                    offcanvasValidationSummary.innerHTML = "";
+                                    offcanvasValidationSummary.classList.remove("error");
+                                    i = true;
+
+                                }
+                                else if (result == "error") {
+
+                                    offcanvasValidationSummary.innerHTML = "Girilen url halihazırda kullanılıyor.";
+                                    offcanvasValidationSummary.classList.add("error");
+                                    i = false;
+                                }
+
+
+
+                                if (linkAliasInputValidate(i)) {
+                                    document.querySelector("#LinkEditOffcanvas").setAttribute("control", true);
+                                } else {
+
+                                    document.querySelector("#LinkEditOffcanvas").setAttribute("control", false);
+                                }
+
+
+                                if (linkTitleInput.classList.contains("error") || linkTagInput.classList.contains("error") || linkAliasInput.classList.contains("error") || linkValidityDateInput.classList.contains("error")) {
+
+                                    EditLinkSubmitBtn.classList.add("btn-disabled");
+                                    EditLinkSubmitBtn.setAttribute("disabled", true);
+
+                                } else {
+                                    EditLinkSubmitBtn.classList.remove("btn-disabled");
+                                    EditLinkSubmitBtn.setAttribute("disabled", false);
+                                    EditLinkSubmitBtn.removeAttribute("disabled");
+                                }
+
+
+                            });
+
+
+                        }
+
+
+
+
+                        function linkAliasInputValidate(i) {
+
+                            var regex = /^[A-Za-z0-9]*$/;
+
+
+                            var checkUrlAliasResult = result;
+
+
+                            if (!regex.test(linkAliasInput.value)) {
+                                linkAliasInputLabel.classList.add("error");
+                                linkAliasInput.classList.add("error");
+                                linkAliasInputValidationMessage.innerText = "Özel url, boşluk ve türkçe karakter içeremez.";
+                                return false;
+                            }
+                            else if (!i) {
+
+                                linkAliasInputLabel.classList.add("error");
+                                linkAliasInput.classList.add("error");
+                                linkAliasInputValidationMessage.innerText = "Girilen url halihazırda kullanılıyor.";
+                                return false;
+
+                            }
+                            else if (linkAliasInput.value.length == 0) {
+                                linkAliasInputLabel.classList.add("error");
+                                linkAliasInput.classList.add("error");
+                                linkAliasInputValidationMessage.innerText = "Url boş geçilemez.";
+                                return false;
+                            }
+                            else if (linkAliasInput.value.length < 4 || linkAliasInput.value.length > 10) {
+
+                                linkAliasInputLabel.classList.add("error");
+                                linkAliasInput.classList.add("error");
+                                linkAliasInputValidationMessage.innerText = "Özel url uzunluğu 4 ile 10 karakter aralığında olmalıdır.";
+                                return false;
+
+                            } else {
+
+                                linkAliasInputLabel.classList.remove("error");
+                                linkAliasInput.classList.remove("error");
+                                linkAliasInputValidationMessage.innerText = "";
+                                return true;
+                            }
+
+
+
+
+
+                        }
+
+
+                        linkTitleInput.addEventListener("keyup", function () {
+
+                            linkTitleInputValidate();
 
                             if (linkTitleInput.classList.contains("error") || linkTagInput.classList.contains("error") || linkAliasInput.classList.contains("error") || linkValidityDateInput.classList.contains("error")) {
 
@@ -539,129 +621,219 @@
                         });
 
 
-                    }
+                        linkTagInput.addEventListener("keyup", function () {
+
+                            linkTagInputValidate();
+
+                            if (linkTitleInput.classList.contains("error") || linkTagInput.classList.contains("error") || linkAliasInput.classList.contains("error") || linkValidityDateInput.classList.contains("error")) {
+
+                                EditLinkSubmitBtn.classList.add("btn-disabled");
+                                EditLinkSubmitBtn.setAttribute("disabled", true);
+
+                            } else {
+                                EditLinkSubmitBtn.classList.remove("btn-disabled");
+                                EditLinkSubmitBtn.setAttribute("disabled", false);
+                                EditLinkSubmitBtn.removeAttribute("disabled");
+                            }
 
 
+                        });
 
 
-                    function linkAliasInputValidate(i) {
+                        linkAliasInput.addEventListener("keyup", function () {
 
-                        var regex = /^[A-Za-z0-9]*$/;
-
-
-                        var checkUrlAliasResult = result;
+                            CheckUrlAlias(linkAliasInputValidate);
 
 
-                        if (!regex.test(linkAliasInput.value)) {
-                            linkAliasInputLabel.classList.add("error");
-                            linkAliasInput.classList.add("error");
-                            linkAliasInputValidationMessage.innerText = "Özel url, boşluk ve türkçe karakter içeremez.";
-                            return false;
-                        }
-                        else if (!i) {
-
-                            linkAliasInputLabel.classList.add("error");
-                            linkAliasInput.classList.add("error");
-                            linkAliasInputValidationMessage.innerText = "Girilen url halihazırda kullanılıyor.";
-                            return false;
-
-                        }
-                        else if (linkAliasInput.value.length == 0) {
-                            linkAliasInputLabel.classList.add("error");
-                            linkAliasInput.classList.add("error");
-                            linkAliasInputValidationMessage.innerText = "Url boş geçilemez.";
-                            return false;
-                        }
-                        else if (linkAliasInput.value.length < 4 || linkAliasInput.value.length > 10) {
-
-                            linkAliasInputLabel.classList.add("error");
-                            linkAliasInput.classList.add("error");
-                            linkAliasInputValidationMessage.innerText = "Özel url uzunluğu 4 ile 10 karakter aralığında olmalıdır.";
-                            return false;
-
-                        } else {
-
-                            linkAliasInputLabel.classList.remove("error");
-                            linkAliasInput.classList.remove("error");
-                            linkAliasInputValidationMessage.innerText = "";
-                            return true;
-                        }
+                        });
 
 
 
 
 
-                    }
 
 
-                    linkTitleInput.addEventListener("keyup", function () {
+                        EditLinkSubmitBtn.addEventListener("click", function (event) {
 
-                        linkTitleInputValidate();
-
-                        if (linkTitleInput.classList.contains("error") || linkTagInput.classList.contains("error") || linkAliasInput.classList.contains("error") || linkValidityDateInput.classList.contains("error")) {
-
-                            EditLinkSubmitBtn.classList.add("btn-disabled");
-                            EditLinkSubmitBtn.setAttribute("disabled", true);
-
-                        } else {
-                            EditLinkSubmitBtn.classList.remove("btn-disabled");
-                            EditLinkSubmitBtn.setAttribute("disabled", false);
-                            EditLinkSubmitBtn.removeAttribute("disabled");
-                        }
+                            //if (EditLinkSubmitBtn.getAttribute("disabled") == false) {
+                            //    document.querySelector("#EditLinkOffcanvasForm").submit();
+                            //}
 
 
-                    });
+                            if (!linkTitleInputValidate() || !linkTagInputValidate() || !linkValidityDateInputValidate() || (document.querySelector("#LinkEditOffcanvas").getAttribute("control") == "false")) {
+
+                                event.preventDefault();
+
+                            } else {
+
+                            }
 
 
-                    linkTagInput.addEventListener("keyup", function () {
-
-                        linkTagInputValidate();
-
-                        if (linkTitleInput.classList.contains("error") || linkTagInput.classList.contains("error") || linkAliasInput.classList.contains("error") || linkValidityDateInput.classList.contains("error")) {
-
-                            EditLinkSubmitBtn.classList.add("btn-disabled");
-                            EditLinkSubmitBtn.setAttribute("disabled", true);
-
-                        } else {
-                            EditLinkSubmitBtn.classList.remove("btn-disabled");
-                            EditLinkSubmitBtn.setAttribute("disabled", false);
-                            EditLinkSubmitBtn.removeAttribute("disabled");
-                        }
 
 
-                    });
 
-
-                    linkAliasInput.addEventListener("keyup", function () {
-
-                        CheckUrlAlias(linkAliasInputValidate);
-
+                        });
 
                     });
 
 
 
 
+                });
 
 
 
-                    EditLinkSubmitBtn.addEventListener("click", function (event) {
 
-                        //if (EditLinkSubmitBtn.getAttribute("disabled") == false) {
-                        //    document.querySelector("#EditLinkOffcanvasForm").submit();
-                        //}
+                $.ajax({
+                    method: "POST",
+                    url: "/Home/UrlsStatisticsChart3",
+                    data: { urlID: linkEditID }
+
+                }).done(function (result) {
+
+                    var UrlStatistic3 = document.querySelector("#UrlStatistic3");
+                    var chart1 = new Chart(UrlStatistic3, {
+
+                        type: "line",
+                        data: {
+                            labels: result[0],
+                            datasets: [{
+                                label: 'Link Tıklanma Sayısı',
+                                data: result[1],
+                                fill: true,
+                                borderColor: '#1E40AF',
+                                tension: 0.1
+                            }]
+                        },
 
 
-                        if (!linkTitleInputValidate() || !linkTagInputValidate() || !linkValidityDateInputValidate() || (document.querySelector("#LinkEditOffcanvas").getAttribute("control") == "false")) {
+                        options: {
+                            title: {
+                                display: true,
+                                text: "Günlere Göre, Linke Tıklanma Sayıları",
+                                fontSize: 26
+                            },
+                            legend: {
+                                display: true,
+                                position: "bottom"
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        stepSize: 5,
+                                        beginAtZero: true,
+                                    },
+                                }],
+                            },
+                        }
 
-                            event.preventDefault();
+                    });
 
-                        } else {
+
+
+                });
+
+
+
+
+
+                $.ajax({
+                    method: "POST",
+                    url: "/Home/UrlsStatisticsChart4",
+                    data: { urlID: linkEditID }
+
+                }).done(function (result) {
+
+                    var UrlStatistic4 = document.querySelector("#UrlStatistic4");
+                    var chart1 = new Chart(UrlStatistic4, {
+
+                        type: "bar",
+                        data: {
+                            labels: result[0],
+                            datasets: [{
+                                label: 'Link Tıklanma Sayısı',
+                                data: result[1],
+                                fill: true,
+                                backgroundColor: "#6B21A8",
+                                borderColor: '#6B21A8',
+                                tension: 0.1
+                            }]
+                        },
+
+
+                        options: {
+                            title: {
+                                display: true,
+                                text: "Aylara Göre, Linke Tıklanma Sayıları",
+                                fontSize: 26
+                            },
+                            legend: {
+                                display: true,
+                                position: "bottom"
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        stepSize: 5,
+                                        beginAtZero: true,
+                                    },
+                                }],
+                            },
+                        }
+
+                    });
+
+
+
+                });
+
+
+
+            }
+
+
+
+
+            var filterForTagNameBtn = document.querySelector(".links-container .filter");
+
+            var filterTagNames = document.querySelector(".links-container #FilterTagName");
+
+            var linkList = document.querySelector(".links-container .link-list");
+
+
+            filterForTagNameBtn.addEventListener("click", function () {
+
+
+                $.ajax({
+                    method: "POST",
+                    url: "/User/FilterForTagNameGetLinks/",
+                    data: { tagName: filterTagNames.value }
+                }).done(function (result) {
+
+                    linkList.innerHTML = result;
+
+                    linksOperations();
+
+
+                    var linkBtns = document.querySelectorAll(".links-btn-container .link-btn");
+
+                    var linkDetailContainer = document.querySelector(".link-detail-inner-container");
+
+                    var urlId = linkBtns.item(0).getAttribute("url-id");
+
+                    $.ajax({
+                        method: "POST",
+                        url: "/User/GetLinkDetailPartialView/",
+                        data: { urlID: urlId },
+                        beforeSend: function () {
 
                         }
 
+                    }).done(function (result) {
 
+                        linkDetailContainer.innerHTML = result;
 
+                        linkDetailButtonsOperations();
 
 
                     });
@@ -669,69 +841,13 @@
                 });
 
 
-
-
             });
-
-
 
 
         }
 
 
-
-
-        var filterForTagNameBtn = document.querySelector(".links-container .filter");
-
-        var filterTagNames = document.querySelector(".links-container #FilterTagName");
-
-        var linkList = document.querySelector(".links-container .link-list");
-
-
-        filterForTagNameBtn.addEventListener("click", function () {
-
-
-            $.ajax({
-                method: "POST",
-                url: "/User/FilterForTagNameGetLinks/",
-                data: { tagName: filterTagNames.value }
-            }).done(function (result) {
-
-                linkList.innerHTML = result;
-
-                linksOperations();
-
-
-                var linkBtns = document.querySelectorAll(".links-btn-container .link-btn");
-
-                var linkDetailContainer = document.querySelector(".link-detail-inner-container");
-
-                var urlId = linkBtns.item(0).getAttribute("url-id");
-
-                $.ajax({
-                    method: "POST",
-                    url: "/User/GetLinkDetailPartialView/",
-                    data: { urlID: urlId },
-                    beforeSend: function () {
-
-                    }
-
-                }).done(function (result) {
-
-                    linkDetailContainer.innerHTML = result;
-
-                    linkDetailButtonsOperations();
-
-
-                });
-
-            });
-
-
-        });
-
-
-    }
+    });
 
 
 

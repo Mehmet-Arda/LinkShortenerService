@@ -18,7 +18,7 @@
         @Html.Partial("_UserLayoutHeaderPartialView", Model.User)
 
 
-        <section>
+        <section class="overflow-auto">
 
             <div class="create-shorturl-form-container">
 
@@ -53,6 +53,7 @@
                         <div class="form-label">Özel Yarı Url (isteğe bağlı)</div>
 
                         <div class="url-alias-container">
+
                             <div class="domain">
                                 @(HttpContext.Current.Request.Url.Host)
                             </div>
@@ -106,141 +107,145 @@
 
 </div>
 
-<script src="~/Scripts/jquery-3.6.1.min.js"></script>
-<script src="~/Scripts/bootstrap.bundle.min.js"></script>
-<script src="~/Scripts/jquery.validate.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
 <script>
 
 
-    var sideNavBarLinks = document.querySelectorAll(".side-nav-bar .side-menu a");
-
-    var currentUrl = window.location.href;
-
-    if (currentUrl.includes("/kullanici/yeni-url-olustur")) {
-
-    }
-    else if (currentUrl.includes("/kullanici/dashboard")) {
-        sideNavBarLinks.item(2).classList.add("active");
-    }
-    else if (currentUrl.includes("/kullanici/profilim")) {
-        sideNavBarLinks.item(4).classList.add("active");
-    }
-    else if (currentUrl.includes("/kullanici/linklerim")) {
-        sideNavBarLinks.item(3).classList.add("active");
-    }
-
-    var profileMeBtn = document.querySelector(".profile-me");
-    var profileMeDropdown = document.querySelector(".profile-me-dropdown");
-
-    var profileMeBtn = document.querySelector(".profile-me");
-    var profileMeDropdown = document.querySelector(".profile-me-dropdown");
+    document.addEventListener("DOMContentLoaded", function () {
 
 
-    profileMeBtn.addEventListener("click", function () {
+        var sideNavBarLinks = document.querySelectorAll(".side-nav-bar .side-menu a");
+
+        var currentUrl = window.location.href;
 
 
+        if (currentUrl.includes("/kullanici/yeni-url-olustur") || currentUrl.includes("/User/CreateShortUrl")) {
 
-        //if (profileMeBtn.classList.contains("active")) {
-        //    profileMeDropdown.style.height = "0px";
-        //} else {
-        //    profileMeDropdown.style.height = "500px";
-        //}
+        }
+        else if (currentUrl.includes("/kullanici/dashboard") || currentUrl.includes("/User/Dashboard")) {
+            sideNavBarLinks.item(2).classList.add("active");
+        }
+        else if (currentUrl.includes("/kullanici/profilim") || currentUrl.includes("/User/UserProfile")) {
+            sideNavBarLinks.item(4).classList.add("active");
+        }
+        else if (currentUrl.includes("/kullanici/linklerim") || currentUrl.includes("/User/Links")) {
+            sideNavBarLinks.item(3).classList.add("active");
+        }
 
-        profileMeBtn.classList.toggle("active");
-        profileMeDropdown.classList.toggle("active");
+        var profileMeBtn = document.querySelector(".profile-me");
+        var profileMeDropdown = document.querySelector(".profile-me-dropdown");
+
+        var profileMeBtn = document.querySelector(".profile-me");
+        var profileMeDropdown = document.querySelector(".profile-me-dropdown");
+
+
+        profileMeBtn.addEventListener("click", function () {
 
 
 
+            //if (profileMeBtn.classList.contains("active")) {
+            //    profileMeDropdown.style.height = "0px";
+            //} else {
+            //    profileMeDropdown.style.height = "500px";
+            //}
 
-
-    });
-
-    //YYYY-MM-DDThh:mm:ss.ms
-
-    //var now = new Date();
-
-
-    //var dateTimeNow = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate() + "T" + now.getHours() + ":" + now.getMinutes();
-
-    //document.querySelector("#ValidityTime").min = dateTimeNow;
+            profileMeBtn.classList.toggle("active");
+            profileMeDropdown.classList.toggle("active");
 
 
 
 
 
+        });
 
-    UnderlineLabelErrorCheck();
+        //YYYY-MM-DDThh:mm:ss.ms
 
-    /*Hata olduğunda label ve underline renginin değiştirilmesi*/
+        //var now = new Date();
 
-    function UnderlineLabelErrorCheck() {
+
+        //var dateTimeNow = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate() + "T" + now.getHours() + ":" + now.getMinutes();
+
+        //document.querySelector("#ValidityTime").min = dateTimeNow;
+
+
+
+
+
+
+        UnderlineLabelErrorCheck();
+
+        /*Hata olduğunda label ve underline renginin değiştirilmesi*/
+
+        function UnderlineLabelErrorCheck() {
+
+            var textInputs = document.querySelectorAll(".create-shorturl-form-container input[type='text']");
+
+            for (var i = 0; i < textInputs.length; i++) {
+
+                if (textInputs.item(i).classList.contains("alias-input")) {
+
+                    if (textInputs.item(i).parentElement.nextElementSibling.classList.contains("field-validation-error")) {
+
+                        textInputs.item(i).parentElement.previousElementSibling.classList.add("error");
+                        textInputs.item(i).classList.add("error");
+                        textInputs.item(i).parentElement.nextElementSibling.classList.add("error");
+
+                    } else if (textInputs.item(i).parentElement.nextElementSibling.classList.contains("field-validation-valid")) {
+
+                        textInputs.item(i).parentElement.previousElementSibling.classList.remove("error");
+                        textInputs.item(i).classList.remove("error");
+                        textInputs.item(i).parentElement.nextElementSibling.classList.remove("error");
+
+                    }
+
+
+                } else if (textInputs.item(i).nextElementSibling.classList.contains("field-validation-error")) {
+
+                    textInputs.item(i).previousElementSibling.classList.add("error");
+                    textInputs.item(i).classList.add("error");
+                    textInputs.item(i).nextElementSibling.classList.add("error");
+
+                }
+                else if (textInputs.item(i).nextElementSibling.classList.contains("field-validation-valid")) {
+
+                    textInputs.item(i).previousElementSibling.classList.remove("error");
+                    textInputs.item(i).classList.remove("error");
+                    textInputs.item(i).nextElementSibling.classList.remove("error");
+
+
+                }
+
+
+            }
+        }
+
+
 
         var textInputs = document.querySelectorAll(".create-shorturl-form-container input[type='text']");
 
         for (var i = 0; i < textInputs.length; i++) {
 
-            if (textInputs.item(i).classList.contains("alias-input")) {
+            textInputs.item(i).addEventListener("keyup", function (e) {
 
-                if (textInputs.item(i).parentElement.nextElementSibling.classList.contains("field-validation-error")) {
+                setTimeout(UnderlineLabelErrorCheck, 150);
 
-                    textInputs.item(i).parentElement.previousElementSibling.classList.add("error");
-                    textInputs.item(i).classList.add("error");
-                    textInputs.item(i).parentElement.nextElementSibling.classList.add("error");
-
-                } else if (textInputs.item(i).parentElement.nextElementSibling.classList.contains("field-validation-valid")) {
-
-                    textInputs.item(i).parentElement.previousElementSibling.classList.remove("error");
-                    textInputs.item(i).classList.remove("error");
-                    textInputs.item(i).parentElement.nextElementSibling.classList.remove("error");
-
-                }
-
-
-            } else if (textInputs.item(i).nextElementSibling.classList.contains("field-validation-error")) {
-
-                textInputs.item(i).previousElementSibling.classList.add("error");
-                textInputs.item(i).classList.add("error");
-                textInputs.item(i).nextElementSibling.classList.add("error");
-
-            }
-            else if (textInputs.item(i).nextElementSibling.classList.contains("field-validation-valid")) {
-
-                textInputs.item(i).previousElementSibling.classList.remove("error");
-                textInputs.item(i).classList.remove("error");
-                textInputs.item(i).nextElementSibling.classList.remove("error");
-
-
-            }
-
-
+            });
         }
-    }
 
 
 
-    var textInputs = document.querySelectorAll(".create-shorturl-form-container input[type='text']");
 
-    for (var i = 0; i < textInputs.length; i++) {
+        var sendBtn = document.querySelector(".create-shorturl-form-container .form-send-btn");
 
-        textInputs.item(i).addEventListener("keyup", function (e) {
+        sendBtn.addEventListener("click", function (e) {
 
             setTimeout(UnderlineLabelErrorCheck, 150);
 
+
         });
-    }
-
-
-
-
-    var sendBtn = document.querySelector(".create-shorturl-form-container .form-send-btn");
-
-    sendBtn.addEventListener("click", function (e) {
-
-        setTimeout(UnderlineLabelErrorCheck, 150);
-
 
     });
+
 
 
 

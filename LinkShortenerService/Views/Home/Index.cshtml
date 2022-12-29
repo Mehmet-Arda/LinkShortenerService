@@ -11,7 +11,7 @@
 <div class="welcome-wrapper">
 
     <header>
-        <a href="/Home/Index" class="logo"><img src="~/Files/logo.png" /> Shorten Url</a>
+        <a href=@Url.Action("Index") class="logo"><img src="~/Files/logo.png" /> Shorten Url</a>
 
         <nav class="header-nav">
             <ul class="nav__links">
@@ -75,10 +75,10 @@
 
     </header>
 
-    <div class="welcome-content">
+    <div class="welcome-content row d-flex justify-content-center">
 
         <div class="row content-one d-flex justify-content-evenly align-items-center pt-5">
-            <div class="col-4 d-flex justify-content-center align-items-center">
+            <div class="col-6 px-5 d-flex justify-content-center align-items-center">
 
                 <div class="row content-one-title text-wrap fw-bold fs-1">
                     Link Kısaltma Servisi, Link Kısaltılır, Halı Kilim Paspas Kenarına overlock...
@@ -87,15 +87,29 @@
             </div>
 
             <div class="col-5">
-                <img src="~/Files/content0.jpg" class="img-fluid rounded" />
+                <img src="~/Files/content0.jpg" class="img-fluid rounded shadow" />
             </div>
         </div>
 
         <div class="row mt-5 w-75 m-auto"><hr /></div>
 
-        <div class="row d-flex justify-content-center align-items-center flex-wrap my-5">
+        @*<img src=@Url.Action("UrlsStatisticsChart1") alt="Url İstatistiği 1" style="object-fit:scale-down;" width="900" height="500" />*@
 
-            <div class="col-3 py-5 me-5">
+        <div class="row w-100 py-4 d-flex justify-content-evenly">
+            <div class="col-8 my-3 p-3 rounded" style="background: #E2E8F0; box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px; ">
+                <canvas id="UrlStatistic1" style=" margin:auto;"></canvas>
+            </div>
+
+            <div class="col-8 my-3 p-3 rounded" style="background: #E2E8F0; box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px; ">
+                <canvas id="UrlStatistic2" style=" margin:auto;"></canvas>
+            </div>
+
+        </div>
+        <div class="row w-75"><hr style="color: #475569; " /></div>
+
+        <div class="row d-flex justify-content-evenly align-items-center flex-wrap my-xxl-4">
+
+            <div class="col-xxl-4 py-5 my-4 my-xxl-0">
                 <div class="statistics-container">
 
                     <div class="statistic-card">
@@ -111,8 +125,16 @@
                         </div>
 
 
-                        <div class="card-statistic-value statistics-text">
-                            @(Model.MostVisitedLinks[0].OriginalUrl)
+                        <div class="card-statistic-value statistics-text" style="top:140px; ">
+                            @if (Model.MostVisitedLinks.Count > 0)
+                            {
+                                @(Model.MostVisitedLinks[0].OriginalUrl)
+                            }
+                            else
+                            {
+                                @("Sistemde hiç Url Bulunmamakta.")
+                            }
+
                         </div>
 
 
@@ -125,7 +147,7 @@
 
 
 
-            <div class="col-3 py-5 ms-5">
+            <div class="col-xxl-4 py-5  my-4 my-xxl-0">
                 <div class="statistics-container">
 
                     <div class="statistic-card">
@@ -143,7 +165,16 @@
 
 
                         <div class="card-statistic-value statistics-number">
-                            @(Model.MostVisitedLinks[0].ClickCount)
+
+                            @if (Model.MostVisitedLinks.Count > 0)
+                            {
+                                @(Model.MostVisitedLinks[0].ClickCount)
+                            }
+                            else
+                            {
+                                @("0")
+                            }
+
                         </div>
 
 
@@ -156,12 +187,12 @@
         </div>
 
 
+        <div class="row w-75"><hr style="color: #475569; " /></div>
 
 
+        <div class="row d-flex justify-content-evenly align-items-center flex-wrap my-xxl-4">
 
-        <div class="row d-flex justify-content-center align-items-center flex-wrap my-5">
-
-            <div class="col-3 py-5">
+            <div class="col-xxl-4 py-5  my-4 my-xxl-0">
                 <div class="statistics-container">
 
                     <div class="statistic-card">
@@ -177,8 +208,10 @@
                         </div>
 
 
-                        <div class="card-statistic-value statistics-text" style="top:0px;">
-                            @{
+                        <div class="card-statistic-value statistics-text" style="top:140px;">
+
+                            @if (Model.MostLinkShortener != null)
+                            {
                                 string name = Model.MostLinkShortener.Name;
                                 string surnName = Model.MostLinkShortener.Surname;
 
@@ -195,8 +228,12 @@
                                 text += new string('*', (surnName.Length - 3));
 
                                 @(text)
-
                             }
+                            else
+                            {
+                                @("Sistemde hiç kullanıcı bulunmamakta.")
+                            }
+
 
                         </div>
 
@@ -208,7 +245,7 @@
 
 
 
-            <div class="col-3 py-5">
+            <div class="col-xxl-4 py-5  my-4 my-xxl-0">
                 <div class="statistics-container">
 
                     <div class="statistic-card">
@@ -239,12 +276,12 @@
         </div>
 
 
+        <div class="row w-75"><hr style="color: #475569; " /></div>
 
 
+        <div class="row d-flex justify-content-evenly align-items-center flex-wrap my-xxl-4">
 
-        <div class="row d-flex justify-content-center align-items-center flex-wrap my-5">
-
-            <div class="col-3 py-5">
+            <div class="col-xxl-4 py-5  my-4 my-xxl-0">
                 <div class="statistics-container">
 
                     <div class="statistic-card">
@@ -272,7 +309,7 @@
 
 
 
-            <div class="col-3 py-5">
+            <div class="col-xxl-4 py-5  my-4 my-xxl-0">
                 <div class="statistics-container">
 
                     <div class="statistic-card">
@@ -282,13 +319,13 @@
                                 <i class="fa-solid fa-users"></i>
                             </div>
 
-                            <div class="card-statistic-title" style="top:-18px;">
+                            <div class="card-statistic-title">
                                 Kullanıcıların Oluşturduğu Ortalama Link Sayısı
                             </div>
                         </div>
 
 
-                        <div class="card-statistic-value statistics-number" style="top:-8px;">
+                        <div class="card-statistic-value statistics-number">
                             @(Model.AverageLinkCountCreatedByUsers)
                         </div>
 
@@ -301,7 +338,7 @@
 
 
 
-            <div class="col-3 py-5">
+            <div class="col-xxl-4 py-5  my-4 my-xxl-0">
                 <div class="statistics-container">
 
                     <div class="statistic-card">
@@ -332,11 +369,11 @@
         </div>
 
 
+        <div class="row w-75"><hr style="color: #475569; " /></div>
 
+        <div class="row d-flex justify-content-center align-items-center flex-wrap my-xxl-4">
 
-        <div class="row d-flex justify-content-center align-items-center flex-wrap my-5">
-
-            <div class="col-3 py-5">
+            <div class="col-12 py-5  my-4 my-xxl-0">
                 <div class="statistics-container">
 
                     <div class="statistic-card">
@@ -373,7 +410,7 @@
 
 
 
-        <div class="row mt-5 w-75 m-auto"><hr /></div>
+        @*<div class="row mt-5 w-75 m-auto"><hr /></div>
 
         <div class="row text-center mt-3">
             <div class="col-12 fw-bold fs-2 mb-2">
@@ -442,7 +479,7 @@
 
             </div>
 
-        </div>
+        </div>*@
 
 
 
@@ -455,8 +492,8 @@
         </div>
 
         <div class="row p-0 g-0 mt-3">
-            <div class="col-12 text-center">
-                Elit in malesuada semper mi, id sollicitudin urna fermentum ut fusce.
+            <div class="col-12 text-center" style="color: #22C55E; ">
+                "Once the game is over, the King and the Pawn go back in the same box."
             </div>
         </div>
 
@@ -482,9 +519,115 @@
 
 </div>
 
-<script src="~/Scripts/jquery-3.6.1.min.js"></script>
-<script src="~/Scripts/bootstrap.bundle.min.js"></script>
-<script src="~/Scripts/jquery.validate.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+
+        $.ajax({
+            method: "POST",
+            url: "/Home/UrlsStatisticsChart1"
+        }).done(function (result) {
+
+            var UrlStatistic1 = document.querySelector("#UrlStatistic1");
+            var chart1 = new Chart(UrlStatistic1, {
+
+                type: "line",
+                data: {
+                    labels: result[0],
+                    datasets: [{
+                        label: 'Toplam Link Sayısı',
+                        data: result[1],
+                        fill: true,
+                        borderColor: '#1E40AF',
+                        tension: 0.1
+                    }]
+                },
+
+
+                options: {
+                    title: {
+                        display: true,
+                        text: "Günlere Göre Oluşturulan Toplam Link Sayıları",
+                        fontSize: 26
+                    },
+                    legend: {
+                        display: true,
+                        position: "bottom"
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                stepSize: 5,
+                                beginAtZero: true,
+                            },
+                        }],
+                    },
+                }
+
+            });
+
+
+
+        });
+
+
+
+
+
+
+        $.ajax({
+            method: "POST",
+            url: "/Home/UrlsStatisticsChart2"
+        }).done(function (result) {
+
+            var UrlStatistic2 = document.querySelector("#UrlStatistic2");
+            var chart2 = new Chart(UrlStatistic2, {
+                type: "bar",
+                data: {
+                    labels: result[0],
+                    datasets: [{
+                        label: 'Toplam Link Sayısı',
+                        data: result[1],
+                        fill: true,
+                        backgroundColor: "#9333EA",
+                        borderColor: '#BE123C',
+                        tension: 0.1
+                    }]
+                },
+
+                options: {
+                    title: {
+                        display: true,
+                        text: "Aylara Göre Oluşturulan Toplam Link Sayıları",
+                        fontSize: 26
+                    },
+                    legend: {
+                        display: true,
+                        position: "bottom"
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                stepSize: 5,
+                                beginAtZero: true,
+                            },
+                        }],
+                    },
+                }
+
+            });
+
+
+
+        });
+
+
+
+
+
+    });
+
+</script>

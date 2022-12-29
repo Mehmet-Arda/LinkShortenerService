@@ -24,7 +24,7 @@ namespace LinkShortenerService.Controllers
         [AuthFilter]
         public ActionResult Links()
         {
-
+            
             IMongoDatabase database = client.GetDatabase("LinkShortenerService");
             IMongoCollection<Users> UsersCollection = database.GetCollection<Users>("Users");
 
@@ -154,6 +154,7 @@ namespace LinkShortenerService.Controllers
 
 
         }
+
 
 
         [AuthFilter]
@@ -415,15 +416,45 @@ namespace LinkShortenerService.Controllers
         {
 
             IMongoDatabase database = client.GetDatabase("LinkShortenerService");
-            var collection = database.GetCollection<Users>("Users");
+            IMongoCollection<Users> UsersCollection = database.GetCollection<Users>("Users");
 
-            //Users user = (Users)collection.Find(x => x.Email == "m.arda.yuksel@gmail.com").FirstOrDefault();
+            IMongoCollection<Urls> UrlsCollection = database.GetCollection<Urls>("Urls");
+
+            //Users user = (Users)UsersCollection.Find(x => x.Email == "m.arda.yuksel@gmail.com").FirstOrDefault();
 
             Users user = (Users)Session["user"];
 
-            UserLinksViewModel userLinksViewModel = new UserLinksViewModel() { User = user };
+            UserDashboardViewModel userDashboardViewModel = new UserDashboardViewModel();
 
-            return View(userLinksViewModel);
+            var url = UrlsCollection.AsQueryable().Where(x => x.CreatedBy == user.ID).OrderByDescending(y => y.ClickCount).FirstOrDefault();
+
+
+            userDashboardViewModel.UserTotalShortenedLinkCount = UrlsCollection.AsQueryable().Where(x => x.CreatedBy == user.ID).Count();
+
+            userDashboardViewModel.TotalClicksCreatedByUser = UrlsCollection.AsQueryable().Where(x => x.CreatedBy == user.ID).Sum(x => x.ClickCount);
+
+            userDashboardViewModel.UserTotalActiveLinkCount = UrlsCollection.AsQueryable().Where(x => x.CreatedBy == user.ID && x.IsActive).Count();
+
+            userDashboardViewModel.UserTotalInactiveLinkCount = UrlsCollection.AsQueryable().Where(x => x.CreatedBy == user.ID && !x.IsActive).Count();
+
+            if (url != null)
+            {
+                var decodedOriginalUrlBytes = Convert.FromBase64String(url.OriginalUrl);
+                var OriginalUrl = Encoding.UTF8.GetString(decodedOriginalUrlBytes);
+
+                var decodedShortenedUrlBytes = Convert.FromBase64String(url.ShortenedUrl);
+                var ShortenedUrl = Encoding.UTF8.GetString(decodedShortenedUrlBytes);
+
+                url.OriginalUrl = OriginalUrl;
+                url.ShortenedUrl = ShortenedUrl;
+            }
+
+
+            userDashboardViewModel.MostVisitedLinkCreatedByUser = url;
+
+            userDashboardViewModel.User = user;
+
+            return View(userDashboardViewModel);
         }
 
 
@@ -483,7 +514,7 @@ namespace LinkShortenerService.Controllers
                     var userName = model.User.Name.Replace(" ", "_");
                     var imageName = willUpdateUser.ID + "_" + userName.ToUpper().ToLower() + "_" + model.User.Surname.ToUpper().ToLower() + "." + fileExtension;
 
-                    model.Photograph.SaveAs(Path.Combine(Server.MapPath("~/Uploads/Users/Images"), imageName));
+                    model.Photograph.SaveAs(Path.Combine(Server.MapPath("~/Files/Uploads/Users/Images"), imageName));
 
                     model.User.Photograph = imageName;
                     willUpdateUser.Photograph = model.User.Photograph;
@@ -497,7 +528,6 @@ namespace LinkShortenerService.Controllers
                     UserProfileViewModel userProfileViewModel = new UserProfileViewModel()
                     {
                         User = model.User,
-
 
                     };
 
@@ -646,7 +676,8 @@ namespace LinkShortenerService.Controllers
         [AuthFilter]
         public ActionResult CreateShortUrl(UserCreateShortUrlViewModel model)
         {
-            DateTime now = DateTime.Now;
+            DateTime now = DateTime.UtcNow.AddHours(3);
+
 
             IMongoDatabase database = client.GetDatabase("LinkShortenerService");
             var usersCollection = database.GetCollection<Users>("Users");
@@ -781,7 +812,7 @@ namespace LinkShortenerService.Controllers
                     //url.ValidityDate = tempNow.AddDays(14).ToString("yyyyMMddHHmmssffff");
                 }
 
-                url.CreatedAt = now.AddHours(3);
+                url.CreatedAt = now;
                 url.CreatedBy = user.ID;
 
 
@@ -826,8 +857,6 @@ namespace LinkShortenerService.Controllers
             IMongoDatabase database = client.GetDatabase("LinkShortenerService");
             IMongoCollection<Urls> urlsCollection = database.GetCollection<Urls>("Urls");
 
-            IMongoCollection<UrlsAccessDatesLocations> urlsAccessDatesLocationsCollection = database.GetCollection<UrlsAccessDatesLocations>("UrlsAccessDatesLocations");
-
 
             if (shortenedUrl == null)
             {
@@ -855,7 +884,7 @@ namespace LinkShortenerService.Controllers
 
                         var validityDate = new DateTime(Convert.ToInt32(splitYMD[0]), Convert.ToInt32(splitYMD[1]), Convert.ToInt32(splitYMD[2]), Convert.ToInt32(splitHm[0]), Convert.ToInt32(splitHm[1]), 0);
 
-                        if (DateTime.Now < validityDate)
+                        if (DateTime.UtcNow.AddHours(3) < validityDate)
                         {
                             urlDocument.ClickCount++;
                             urlsCollection.ReplaceOne(x => x.ID == urlDocument.ID, urlDocument);
@@ -867,6 +896,16 @@ namespace LinkShortenerService.Controllers
                             //UrlsAccessDatesLocations urlsAccessDatesLocations = new UrlsAccessDatesLocations();
 
                             //urlsAccessDatesLocations.UrlID = urlDocument.ID;
+
+
+                            UrlsAccessDatesLocations urlsAccessDatesLocations = new UrlsAccessDatesLocations();
+
+                            urlsAccessDatesLocations.UrlID = urlDocument.ID;
+                            urlsAccessDatesLocations.AccessDate = DateTime.UtcNow.AddHours(3);
+
+                            IMongoCollection<UrlsAccessDatesLocations> urlsAccessDatesLocationsCollection = database.GetCollection<UrlsAccessDatesLocations>("UrlsAccessDatesLocations");
+
+                            urlsAccessDatesLocationsCollection.InsertOne(urlsAccessDatesLocations);
 
 
                             return Redirect(OriginalUrl);
@@ -914,7 +953,7 @@ namespace LinkShortenerService.Controllers
         {
             Session.Clear();
 
-            return RedirectToAction("Login","Home");
+            return RedirectToAction("girisyap", "hosgeldiniz");
         }
 
 

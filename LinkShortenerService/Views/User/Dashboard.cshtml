@@ -1,6 +1,6 @@
 ﻿
 
-@model LinkShortenerService.Models.ViewModels.UserLinksViewModel
+@model LinkShortenerService.Models.ViewModels.UserDashboardViewModel
 
 
 @{
@@ -10,14 +10,241 @@
 
 <div class="user-index-wrapper">
 
-     @Html.Partial("_UserLayoutSideNavBarPartialView")
+    @Html.Partial("_UserLayoutSideNavBarPartialView")
 
     <div class="main-content">
 
-         @Html.Partial("_UserLayoutHeaderPartialView", Model.User)
-       
+        @Html.Partial("_UserLayoutHeaderPartialView", Model.User)
 
-        <section>
+
+        <section class="overflow-scroll d-flex flex-wrap" user-id=@(Model.User.ID)>
+
+
+            <div class="row w-100 py-4 d-flex justify-content-evenly">
+                <div class="col-xxl-5 col-8 p-3 my-1 bg-white rounded shadow">
+                    <canvas id="UrlStatistic1" style=" margin:auto;"></canvas>
+                </div>
+
+                <div class="col-xxl-5 col-8 p-3 my-1 bg-white rounded shadow">
+                    <canvas id="UrlStatistic2" style=" margin:auto;"></canvas>
+                </div>
+
+
+            </div>
+
+            <div class="row w-75"><hr style="color: #475569; " /></div>
+
+            <div class="row w-100 d-flex justify-content-evenly align-items-center flex-wrap my-xxl-4">
+
+                <div class="col-xxl-4 py-5  my-4 my-xxl-0">
+                    <div class="statistics-container bg-white rounded shadow">
+
+                        <div class="statistic-card">
+
+                            <div class="card-icon-title-container">
+                                <div class="card-icon">
+                                    <i class="fa-solid fa-link"></i>
+                                </div>
+
+                                <div class="card-statistic-title">
+                                    Oluşturduğum Linkler Arasında En Çok Ziyaret Edilen Link
+                                </div>
+                            </div>
+
+
+                            <div class="card-statistic-value statistics-text" style="top:140px; ">
+                                @if (Model.MostVisitedLinkCreatedByUser != null)
+                                {
+                                    @(Model.MostVisitedLinkCreatedByUser.OriginalUrl)
+                                }
+                                else
+                                {
+                                    @("Hiç Link Oluşturmadım.")
+                                }
+
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <div class="col-xxl-4 py-5 my-4 my-xxl-0">
+                    <div class="statistics-container bg-white rounded shadow">
+
+                        <div class="statistic-card">
+
+                            <div class="card-icon-title-container">
+                                <div class="card-icon">
+                                    <i class="fa-solid fa-hand-pointer"></i>
+                                </div>
+
+                                <div class="card-statistic-title">
+                                    En Çok Ziyaret Edilen Linkime Tıklanma Sayısı
+                                </div>
+                            </div>
+
+
+                            <div class="card-statistic-value statistics-number">
+
+                                @if (Model.MostVisitedLinkCreatedByUser != null)
+                                {
+                                    @(Model.MostVisitedLinkCreatedByUser.ClickCount)
+                                }
+                                else
+                                {
+                                    @("0")
+                                }
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="row w-75"><hr style="color: #475569; " /></div>
+
+
+
+            <div class="row w-100 d-flex justify-content-evenly align-items-center flex-wrap my-xxl-4">
+
+                <div class="col-xxl-4 py-5  my-4 my-xxl-0">
+                    <div class="statistics-container bg-white rounded shadow">
+
+                        <div class="statistic-card">
+
+                            <div class="card-icon-title-container">
+                                <div class="card-icon">
+                                    <i class="fa-solid fa-ruler-horizontal"></i>
+                                </div>
+
+                                <div class="card-statistic-title">
+                                    Kısalttığım Toplam Link
+                                </div>
+                            </div>
+
+
+                            <div class="card-statistic-value statistics-number">
+
+                                @(Model.UserTotalShortenedLinkCount)
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <div class="col-xxl-4 py-5  my-4 my-xxl-0">
+                    <div class="statistics-container bg-white rounded shadow">
+
+                        <div class="statistic-card">
+
+                            <div class="card-icon-title-container">
+                                <div class="card-icon">
+                                    <i class="fa-solid fa-location-arrow"></i>
+                                </div>
+
+                                <div class="card-statistic-title">
+                                    Oluşturduğum Linklere Yapılan Toplam Yönlendirme
+                                </div>
+                            </div>
+
+
+                            <div class="card-statistic-value statistics-number">
+                                @(Model.TotalClicksCreatedByUser)
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="row w-75"><hr style="color: #475569; " /></div>
+
+
+
+            <div class="row w-100 d-flex justify-content-evenly align-items-center flex-wrap my-xxl-4">
+
+                <div class="col-12 py-5  my-4 my-xxl-0">
+                    <div class="statistics-container bg-white rounded shadow">
+
+                        <div class="statistic-card">
+
+                            <div class="card-icon-title-container">
+                                <div class="card-icon">
+                                    <i class="fa-solid fa-heart-pulse"></i>
+                                </div>
+
+                                <div class="card-statistic-title">
+                                    Halen Aktif Kısalttığım Toplam Link
+                                </div>
+                            </div>
+
+
+                            <div class="card-statistic-value statistics-number">
+
+                                @(Model.UserTotalActiveLinkCount)
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <div class="col-12 py-5  my-4 my-xxl-0">
+                    <div class="statistics-container bg-white rounded shadow">
+
+                        <div class="statistic-card">
+
+                            <div class="card-icon-title-container">
+                                <div class="card-icon">
+                                    <i class="fa-solid fa-heart-crack"></i>
+                                </div>
+
+                                <div class="card-statistic-title">
+                                    İnaktif Kısalttığım Toplam Link
+                                </div>
+                            </div>
+
+
+                            <div class="card-statistic-value statistics-number">
+                                @(Model.UserTotalInactiveLinkCount)
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
 
 
 
@@ -29,53 +256,182 @@
 
 </div>
 
-<script src="~/Scripts/jquery-3.6.1.min.js"></script>
-<script src="~/Scripts/bootstrap.bundle.min.js"></script>
-<script src="~/Scripts/jquery.validate.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+
 <script>
 
 
-
-    var sideNavBarLinks = document.querySelectorAll(".side-nav-bar .side-menu a");
-
-    var currentUrl = window.location.href;
-
-    if (currentUrl.includes("/kullanici/yeni-url-olustur")) {
-
-    }
-    else if (currentUrl.includes("/kullanici/dashboard")) {
-        sideNavBarLinks.item(2).classList.add("active");
-    }
-    else if (currentUrl.includes("/kullanici/profilim")) {
-        sideNavBarLinks.item(4).classList.add("active");
-    }
-    else if (currentUrl.includes("/kullanici/linklerim")) {
-        sideNavBarLinks.item(3).classList.add("active");
-    }
-
-    var profileMeBtn = document.querySelector(".profile-me");
-    var profileMeDropdown = document.querySelector(".profile-me-dropdown");
+    document.addEventListener("DOMContentLoaded", function () {
 
 
-    profileMeBtn.addEventListener("click", function () {
+        var sideNavBarLinks = document.querySelectorAll(".side-nav-bar .side-menu a");
+
+        var currentUrl = window.location.href;
+
+        if (currentUrl.includes("/kullanici/yeni-url-olustur") || currentUrl.includes("/User/CreateShortUrl")) {
+
+        }
+        else if (currentUrl.includes("/kullanici/dashboard") || currentUrl.includes("/User/Dashboard")) {
+            sideNavBarLinks.item(2).classList.add("active");
+        }
+        else if (currentUrl.includes("/kullanici/profilim") || currentUrl.includes("/User/UserProfile")) {
+            sideNavBarLinks.item(4).classList.add("active");
+        }
+        else if (currentUrl.includes("/kullanici/linklerim") || currentUrl.includes("/User/Links")) {
+            sideNavBarLinks.item(3).classList.add("active");
+        }
+
+        var profileMeBtn = document.querySelector(".profile-me");
+        var profileMeDropdown = document.querySelector(".profile-me-dropdown");
+
+
+        profileMeBtn.addEventListener("click", function () {
 
 
 
-        //if (profileMeBtn.classList.contains("active")) {
-        //    profileMeDropdown.style.height = "0px";
-        //} else {
-        //    profileMeDropdown.style.height = "500px";
-        //}
+            //if (profileMeBtn.classList.contains("active")) {
+            //    profileMeDropdown.style.height = "0px";
+            //} else {
+            //    profileMeDropdown.style.height = "500px";
+            //}
 
-        profileMeBtn.classList.toggle("active");
-        profileMeDropdown.classList.toggle("active");
+            profileMeBtn.classList.toggle("active");
+            profileMeDropdown.classList.toggle("active");
+
+
+
+
+
+        });
+
+
+
+
+
+        var userID = document.querySelector("section").getAttribute("user-id");
+
+        $.ajax({
+            method: "POST",
+            url: "/Home/UrlsStatisticsChart1",
+            data: { userID: userID }
+
+        }).done(function (result) {
+
+            var UrlStatistic1 = document.querySelector("#UrlStatistic1");
+            var chart1 = new Chart(UrlStatistic1, {
+
+                type: "line",
+                data: {
+                    labels: result[0],
+                    datasets: [{
+                        label: 'Toplam Link Sayısı',
+                        data: result[1],
+                        fill: true,
+                        borderColor: '#1E40AF',
+                        tension: 0.1
+                    }]
+                },
+
+                
+
+                options: {
+                    title: {
+                        display: true,
+                        text: "Günlere Göre, Oluşturduğum Toplam Link Sayıları",
+                        fontSize: 26
+                    },
+                    legend: {
+                        display: true,
+                        position: "bottom"
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                stepSize: 5,
+                                beginAtZero: true,
+                            },
+                        }],
+                    },
+                }
+
+            });
+
+
+
+        });
+
+
+
+
+
+
+        $.ajax({
+            method: "POST",
+            url: "/Home/UrlsStatisticsChart2",
+            data: { userID: userID }
+
+        }).done(function (result) {
+
+            var UrlStatistic2 = document.querySelector("#UrlStatistic2");
+            var chart2 = new Chart(UrlStatistic2, {
+                type: "bar",
+                data: {
+                    labels: result[0],
+                    datasets: [{
+                        label: 'Toplam Link Sayısı',
+                        data: result[1],
+                        fill: true,
+                        backgroundColor: "#6B21A8",
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+
+                options: {
+                    title: {
+                        display: true,
+                        text: "Aylara Göre, Oluşturduğum Toplam Link Sayıları",
+                        fontSize: 26
+                    },
+                    legend: {
+                        display: true,
+                        position: "bottom"
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                stepSize: 5,
+                                beginAtZero: true,
+                            },
+                        }],
+                    },
+                }
+
+            });
+
+
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 
     });
+
 
 
 

@@ -35,7 +35,7 @@ namespace LinkShortenerService.Models
         [BsonElement("tag_name"), DisplayName("Etiket(isteğe bağlı)"),MinLength(3,ErrorMessage ="Etiket ismi 3 karakterden küçük olamaz."),MaxLength(15,ErrorMessage ="Etiket ismi 15 karakterden büyük olamaz.")]
         public string TagName { get; set; }
 
-        [BsonElement("title"), DisplayName("Başlık(isteğe bağlı)"),MinLength(4,ErrorMessage ="Başlık alanı 4 karakterden küçük olamaz."),MaxLength(30,ErrorMessage ="Başlık alanı 30 karakterden büyük olamaz.")]
+        [BsonElement("title"), DisplayName("Başlık(isteğe bağlı)"),MinLength(4,ErrorMessage ="Başlık alanı 4 karakterden küçük olamaz."),MaxLength(50,ErrorMessage ="Başlık alanı 50 karakterden büyük olamaz.")]
         public string Title { get; set; }
 
         [BsonElement("is_active"), DisplayName("Aktif mi")]
