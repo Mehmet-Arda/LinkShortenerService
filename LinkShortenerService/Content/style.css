@@ -691,7 +691,7 @@ body {
     background-color:white;
     border-radius:3px 3px 3px 20px;
     width:440px;
-    height:750px;
+    height:630px;
     position:relative;
     z-index:3;
     overflow-y:scroll;
@@ -1737,7 +1737,7 @@ box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2p
 
 .create-shorturl-form-container{
     width:70%;
-    height:90%;
+    height:83%;
     max-width:900px;
     min-width:650px;
     margin-top:8px;
@@ -1947,20 +1947,20 @@ box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2p
 
 
 .links-container .links-header{
-     padding:20px 25px;
+     padding:10px 25px;
      background:white;
-     height:15%;
+     height:11%;
      display:flex;
      justify-content:start;
      align-items:center;
      flex-wrap:wrap;
-     min-height:160px;
+     min-height:130px;
 }
 
 .links-container .links-header .title{
     font-size:30px;
     font-weight:700;
-    margin-bottom:13px;
+    margin-bottom:0px;
     width:100%;
 }
 
@@ -2485,6 +2485,7 @@ box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2p
     word-wrap:break-word;
     text-align:start;
     border:none;
+    background:none;
 
 }
 

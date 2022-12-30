@@ -24,11 +24,11 @@
         @using (Html.BeginForm("Signin", "Home", FormMethod.Post, new { @class = "signin-form" }))
         {
 
-            <div class="signin-form-title text-center position-relative mt-5">
+            <div class="signin-form-title text-center position-relative mt-4">
                 Kaydol
             </div>
 
-            <div class="signin-form-input-container mt-5">
+            <div class="signin-form-input-container mt-3">
                 @Html.LabelFor(x => x.User.Name, new { @class = "signin-form-input-label active" })
 
                 @Html.TextBoxFor(x => x.User.Name, new { @class = "signin-form-input active", autocomplete = "off",autofocus="true" })
