@@ -410,12 +410,12 @@
 
                         function linkTagInputValidate() {
 
-                            var regex = /^[A-Za-z0-9]*$/;
+                            var regex = /^[A-Za-zçÇğĞİıÖöŞşüÜ0-9]*$/;
 
                             if (!regex.test(linkTagInput.value)) {
                                 linkTagInputLabel.classList.add("error");
                                 linkTagInput.classList.add("error");
-                                linkTagInputValidationMessage.innerText = "Etiket, boşluk ve türkçe karakter içeremez.";
+                                linkTagInputValidationMessage.innerText = "Etiket, boşluk içeremez.";
                                 return false;
                             }
                             else if (linkTagInput.value.length == 0) {
